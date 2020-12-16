@@ -182,3 +182,8 @@ fabric.properties
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/symfony,intellij,visualstudiocode,composer
+
+
+# Rajouter à la main par nous
+.env
+.env.test
