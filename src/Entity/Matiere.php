@@ -20,7 +20,7 @@ class Matiere
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $nom;
 
@@ -28,6 +28,11 @@ class Matiere
      * @ORM\OneToMany(targetEntity=Annonce::class, mappedBy="matiere")
      */
     private $annonce;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $imagePath;
 
     public function __construct()
     {
@@ -82,6 +87,18 @@ class Matiere
                 $annonce->setMatiere(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getImagePath(): ?string
+    {
+        return $this->imagePath;
+    }
+
+    public function setImagePath(string $imagePath): self
+    {
+        $this->imagePath = $imagePath;
 
         return $this;
     }
