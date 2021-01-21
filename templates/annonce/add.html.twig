@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ action }}{% endblock %}
+
+{% block body %}
+
+<div class="container">
+	<h2>{{ action }}</h2>
+ 	{{ form(annonceForm) }}
+</div>
+
+{% endblock %}

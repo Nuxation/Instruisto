@@ -93,6 +93,12 @@ class Annonce
     {
         $this->creneaus = new ArrayCollection();
         $this->utilisateurAnnonces = new ArrayCollection();
+        $this->createdAt = new \DateTime();
+    }
+
+    public function __toString()
+    {
+        return $this->titre;
     }
 
     public function getId(): ?int
