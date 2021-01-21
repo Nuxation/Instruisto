@@ -94,6 +94,21 @@ class User
      */
     private $utilisateurAnnonces;
 
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $dateDeNaissance;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $presentation;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $etudeEtDiplome;
+
     public function __construct()
     {
         $this->annonces = new ArrayCollection();
@@ -431,6 +446,42 @@ class User
                 $utilisateurAnnonce->setCandidat(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDateDeNaissance(): ?\DateTimeInterface
+    {
+        return $this->dateDeNaissance;
+    }
+
+    public function setDateDeNaissance(\DateTimeInterface $dateDeNaissance): self
+    {
+        $this->dateDeNaissance = $dateDeNaissance;
+
+        return $this;
+    }
+
+    public function getPresentation(): ?string
+    {
+        return $this->presentation;
+    }
+
+    public function setPresentation(?string $presentation): self
+    {
+        $this->presentation = $presentation;
+
+        return $this;
+    }
+
+    public function getEtudeEtDiplome(): ?string
+    {
+        return $this->etudeEtDiplome;
+    }
+
+    public function setEtudeEtDiplome(?string $etudeEtDiplome): self
+    {
+        $this->etudeEtDiplome = $etudeEtDiplome;
 
         return $this;
     }
