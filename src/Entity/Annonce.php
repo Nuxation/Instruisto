@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=AnnonceRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Annonce
 {
@@ -57,19 +58,19 @@ class Annonce
 
     /**
      * @ORM\ManyToOne(targetEntity=Presentiel::class, inversedBy="nom")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $presentiel;
 
     /**
      * @ORM\ManyToOne(targetEntity=Niveau::class, inversedBy="Annonce")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $niveau;
 
     /**
      * @ORM\ManyToOne(targetEntity=StatusAnnonce::class, inversedBy="Annonce")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $statusAnnonce;
 
@@ -80,7 +81,7 @@ class Annonce
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="annonces")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $auteur;
 
@@ -290,5 +291,12 @@ class Annonce
         }
 
         return $this;
+    }
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreatedAtPrepresist()
+    {
+        $this->createdAt = new \DateTime();
     }
 }

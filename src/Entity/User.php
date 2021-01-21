@@ -94,6 +94,21 @@ class User
      */
     private $utilisateurAnnonces;
 
+    /**
+     * @ORM\Column(type="date", nullable=true))
+     */
+    private $dateDeNaissance;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $presentation;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $etudeEtDiplome;
+
     public function __construct()
     {
         $this->annonces = new ArrayCollection();
@@ -433,5 +448,53 @@ class User
         }
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDateDeNaissance()
+    {
+        return $this->dateDeNaissance;
+    }
+
+    /**
+     * @param mixed $dateDeNaissance
+     */
+    public function setDateDeNaissance($dateDeNaissance): void
+    {
+        $this->dateDeNaissance = $dateDeNaissance;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPresentation()
+    {
+        return $this->presentation;
+    }
+
+    /**
+     * @param mixed $presentation
+     */
+    public function setPresentation($presentation): void
+    {
+        $this->presentation = $presentation;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEtudeEtDiplome()
+    {
+        return $this->etudeEtDiplome;
+    }
+
+    /**
+     * @param mixed $etudeEtDiplome
+     */
+    public function setEtudeEtDiplome($etudeEtDiplome): void
+    {
+        $this->etudeEtDiplome = $etudeEtDiplome;
     }
 }
