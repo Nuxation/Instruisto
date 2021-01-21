@@ -176,3 +176,4 @@ fabric.properties
 /.env.test
 /var/*
 .env
+.env
