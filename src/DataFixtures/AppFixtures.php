@@ -36,7 +36,10 @@ class AppFixtures extends Fixture
                 ->setTelephone($faker->phoneNumber())
                 ->setGenre($faker->randomElement(["Homme", "Femme"]))
                 //$encrypted = $this->passwordEncoder->encodePassword('test');
-                ->setMotDePass("test")
+                ->setPassword($this->passwordEncoder->encodePassword(
+                    $user,
+                    'test'
+                ))
                 ->setDateDeNaissance(new \DateTime())
                 ->setPresentation($faker->paragraph)
                 ->setEtudeEtDiplome($diplome[array_rand($diplome)]);
@@ -44,16 +47,19 @@ class AppFixtures extends Fixture
         }
         $admin = new User();
         $admin->setNom("haspadar")
-        ->setPrenom("instruisto")
-        ->setEmail($faker->firstName . '-' . $faker->lastName . '@admin.fr')
-        //->setRoles(['ROLE_ADMIN'])
-        ->setTelephone($faker->phoneNumber())
-        ->setGenre("Homme")
-        //$encrypted = $this->passwordEncoder->encodePassword('test');
-        ->setMotDePass("test")
-        ->setDateDeNaissance(new \DateTime())
-        ->setPresentation($faker->paragraph)
-        ->setEtudeEtDiplome($diplome[array_rand($diplome)]);
+            ->setPrenom("instruisto")
+            ->setEmail('haspadar@admin.fr')
+            ->setRoles(['ROLE_ADMIN'])
+            ->setTelephone($faker->phoneNumber())
+            ->setGenre("Homme")
+            //$encrypted = $this->passwordEncoder->encodePassword('test');
+            ->setPassword($this->passwordEncoder->encodePassword(
+                $user,
+                'test'
+            ))
+            ->setDateDeNaissance(new \DateTime())
+            ->setPresentation($faker->paragraph)
+            ->setEtudeEtDiplome($diplome[array_rand($diplome)]);
         $manager->persist($admin);
 
         $manager->flush();

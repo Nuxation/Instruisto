@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\MessageRepository;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\MessageRepository;
 
 /**
  * @ORM\Entity(repositoryClass=MessageRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Message
 {
@@ -33,6 +35,11 @@ class Message
      * @ORM\JoinColumn(nullable=false)
      */
     private $destinataire;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
 
     public function getId(): ?int
     {
@@ -73,5 +80,26 @@ class Message
         $this->destinataire = $destinataire;
 
         return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreatedAtPrepresist()
+    {
+        $this->createdAt = new \DateTime();
     }
 }
