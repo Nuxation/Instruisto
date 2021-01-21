@@ -9,12 +9,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class TempController extends AbstractController
 {
     /**
-     * @Route("/", name="temp")
+     * @Route("/", name="accueil")
      */
-    public function index(): Response
+    public function accueil(): Response
     {
-        return $this->render('temp/index.html.twig', [
-            'Nom' => "Coucou l'équipe Haspadar",
-        ]);
+        return $this->render('index.html.twig');
     }
 }
