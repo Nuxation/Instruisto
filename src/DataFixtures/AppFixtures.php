@@ -58,7 +58,6 @@ class AppFixtures extends Fixture
             ->setRoles(['ROLE_ADMIN'])
             ->setTelephone($faker->phoneNumber())
             ->setGenre("Homme")
-            //$encrypted = $this->passwordEncoder->encodePassword('test');
             ->setPassword($this->passwordEncoder->encodePassword(
                 $admin,
                 'test'
