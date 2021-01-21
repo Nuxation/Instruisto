@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajout d'une annonce{% endblock %}
+
+{% block body %}
+
+<div class="container">
+	<h1>Annonce</h1>
+		<p> Titre : {{ annonce.titre }} </p>
+		<p> Description : {{ annonce.description }} </p>
+		<p> Prix : {{ annonce.prix }} </p>
+		<p> Durée en minutes : {{ annonce.dureeEnMin }} </p>
+		<p> Lieux : {{ annonce.lieux }} </p>
+		<p> Créé le {{ annonce.createdAt|date("d/m/Y") }} à {{ annonce.createdAt|date("H:i") }} </p>
+		<p> Matière : {{ annonce.matiere }} </p>
+		<p> Présentiel : {{ annonce.presentiel }} </p>
+		<p> Niveau : {{ annonce.niveau }} </p>
+		<p> Status annonce : {{ annonce.statusAnnonce }} </p>
+		<p> Auteur : {{ annonce.auteur }} </p>
+		<p><a href="{{ path('annonce_update', { 'id': annonce.id }) }}">
+ modifier l'annonce</a></p>
+ 		<p><a href="{{ path('annonce_delete', { 'id': annonce.id }) }}">
+ supprimer l'annonce</a></p>
+</div>
+
+{% endblock %}
