@@ -173,6 +173,6 @@ fabric.properties
 
 
 # Rajouter à la main par nous
-.env
-.env.test
+/.env
+/.env.test
 /var/*

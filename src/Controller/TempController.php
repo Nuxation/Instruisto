@@ -13,6 +13,6 @@ class TempController extends AbstractController
      */
     public function accueil(): Response
     {
-        return $this->render('index.html.twig');
+        return $this->render('temp/index.html.twig');
     }
 }
