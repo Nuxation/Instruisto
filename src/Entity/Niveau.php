@@ -65,7 +65,6 @@ class Niveau
             $this->Annonce[] = $annonce;
             $annonce->setNiveau($this);
         }
-
         return $this;
     }
 

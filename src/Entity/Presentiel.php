@@ -20,7 +20,7 @@ class Presentiel
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity=Annonce::class, mappedBy="presentiel")
+     * @ORM\Column(type="string", length=255)
      */
     private $nom;
 
@@ -34,32 +34,14 @@ class Presentiel
         return $this->id;
     }
 
-    /**
-     * @return Collection|Annonce[]
-     */
-    public function getNom(): Collection
+    public function getNom(): ?string
     {
         return $this->nom;
     }
 
-    public function addNom(Annonce $nom): self
+    public function setNom(string $nom): self
     {
-        if (!$this->nom->contains($nom)) {
-            $this->nom[] = $nom;
-            $nom->setPresentiel($this);
-        }
-
-        return $this;
-    }
-
-    public function removeNom(Annonce $nom): self
-    {
-        if ($this->nom->removeElement($nom)) {
-            // set the owning side to null (unless already changed)
-            if ($nom->getPresentiel() === $this) {
-                $nom->setPresentiel(null);
-            }
-        }
+        $this->nom = $nom;
 
         return $this;
     }
