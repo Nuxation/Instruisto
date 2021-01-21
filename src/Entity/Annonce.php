@@ -7,6 +7,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Repository\AnnonceRepository;
+use App\Entity\UtilisateurAnnonce;
+use App\Entity\User;
+use App\Entity\StatusAnnonce;
+use App\Entity\Niveau;
+use App\Entity\Matiere;
+use App\Entity\Creneau;
 
 /**
  * @ORM\Entity(repositoryClass=AnnonceRepository::class)
@@ -58,12 +64,6 @@ class Annonce
     private $matiere;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Presentiel::class, inversedBy="nom")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $presentiel;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Niveau::class, inversedBy="Annonce")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -90,6 +90,11 @@ class Annonce
      * @ORM\OneToMany(targetEntity=UtilisateurAnnonce::class, mappedBy="annonce", orphanRemoval=true)
      */
     private $utilisateurAnnonces;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Presentiel::class, inversedBy="annonces")
+     */
+    private $presentiel;
 
     public function __construct()
     {
@@ -192,17 +197,6 @@ class Annonce
         return $this;
     }
 
-    public function getPresentiel(): ?Presentiel
-    {
-        return $this->presentiel;
-    }
-
-    public function setPresentiel(?Presentiel $presentiel): self
-    {
-        $this->presentiel = $presentiel;
-
-        return $this;
-    }
 
     public function getNiveau(): ?Niveau
     {
@@ -306,5 +300,17 @@ class Annonce
     public function setCreatedAtPrepresist()
     {
         $this->createdAt = new \DateTime();
+    }
+
+    public function getPresentiel(): ?Presentiel
+    {
+        return $this->presentiel;
+    }
+
+    public function setPresentiel(?Presentiel $presentiel): self
+    {
+        $this->presentiel = $presentiel;
+
+        return $this;
     }
 }
