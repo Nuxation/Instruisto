@@ -34,14 +34,16 @@ class AppFixtures extends Fixture
         //creation des Utilisateurs
         $diplome = ["Diplome A", "Diplome B", "Diplome C", "Diplome D"];
         $users = [];
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 10; $i++) {
+            $genre = $faker->randomElement(["Homme", "Femme"]);
+            $prenom = $faker->firstName(($genre == "Homme") ? "male" : "female");
             $users[$i] = new User();
             $users[$i]->setNom($faker->lastName)
-                ->setPrenom($faker->firstName)
-                ->setEmail($faker->firstName . '-' . $faker->lastName . '@etud.fr')
+                ->setPrenom($prenom)
+                ->setEmail($prenom . '-' . $faker->lastName . '@etud.fr')
                 ->setTelephone($faker->phoneNumber())
-                ->setGenre($faker->randomElement(["Homme", "Femme"]))
-                //$encrypted = $this->passwordEncoder->encodePassword('test');
+                ->setGenre($genre)
+                ->setAvatar("https://randomuser.me/api/portraits/{($genre == 'Homme') ? 'men' : 'women')}/{$faker->numberBetween(0, 99)}.jpg")
                 ->setPassword($this->passwordEncoder->encodePassword(
                     $users[$i],
                     'test'
@@ -116,6 +118,7 @@ class AppFixtures extends Fixture
         // Creation des annonces
         $lieux = ["Salon A", "Salon B", "Salon C", "Salon D"];
 
+        $annonces = [];
         for ($i = 0; $i < 30; $i++) {
             $anMatiere = $faker->randomElement($matieres);
             $anNiveau = $faker->randomElement($niveaux);
