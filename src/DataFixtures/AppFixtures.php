@@ -38,13 +38,14 @@ class AppFixtures extends Fixture
         for ($i = 0; $i < 30; $i++) {
             $genre = $faker->randomElement(["Homme", "Femme"]);
             $prenom = $faker->firstName(($genre == "Homme") ? "male" : "female");
+            $genreAvatar = (($genre == 'Homme') ? 'men' : 'women');
             $users[$i] = new User();
             $users[$i]->setNom($faker->lastName)
                 ->setPrenom($prenom)
                 ->setEmail($prenom . '-' . $faker->lastName . '@etud.fr')
                 ->setTelephone($faker->phoneNumber())
                 ->setGenre($genre)
-                ->setAvatar("https://randomuser.me/api/portraits/{($genre == 'Homme') ? 'men' : 'women')}/{$faker->numberBetween(0, 99)}.jpg")
+                ->setAvatar("https://randomuser.me/api/portraits/{$genreAvatar}/{$faker->numberBetween(0, 99)}.jpg")
                 ->setPassword($this->passwordEncoder->encodePassword(
                     $users[$i],
                     'test'
@@ -65,6 +66,7 @@ class AppFixtures extends Fixture
                 $admin,
                 'test'
             ))
+            ->setAvatar("/assets/images/icone/logoOriginal1080x1080.png")
             ->setDateDeNaissance(new \DateTime())
             ->setPresentation($faker->paragraph)
             ->setEtudeEtDiplome($diplome[array_rand($diplome)]);
@@ -85,8 +87,8 @@ class AppFixtures extends Fixture
         for ($i = 0; $i < count($matiersNom); $i++) {
             $matieres[$i] = new Matiere();
             $matieres[$i]
-            ->setNom($matiersNom[$i][0])
-            ->setImagePath($matiersNom[$i][1]);
+                ->setNom($matiersNom[$i][0])
+                ->setImagePath($matiersNom[$i][1]);
 
             $manager->persist($matieres[$i]);
         }
@@ -183,6 +185,26 @@ class AppFixtures extends Fixture
 
             $manager->persist($commentaires[$i]);
         }
+
+        // je fait candidater un utilisateur a toutes les annonces
+        $commentaires = [];
+        for ($i = 0; $i < 300; $i++) {
+            $source = $faker->randomElement($users);
+            $tempUsers = $users;
+            unset($tempUsers[array_search($source, $tempUsers)]);
+            $destinataire = $faker->randomElement($tempUsers);
+
+            $commentaires[$i] = new Commentaire();
+
+            $commentaires[$i]
+                ->setContenu($faker->paragraph(3, true))
+                ->setNote($faker->numberBetween(1, 5))
+                ->setSource($source)
+                ->setDestinataire($destinataire);
+
+            $manager->persist($commentaires[$i]);
+        }
+
         $manager->flush();
     }
 }
