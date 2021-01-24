@@ -72,13 +72,22 @@ class AppFixtures extends Fixture
 
         // Creation des matieres
         $matiersNom = [
-            "Sport", "Mathematiques", "Literature", "Physique/Chimie",
-            "informatique", "Langues", "Science de la Terre", "Philosophie"
+            ["Sport", "/assets/images/icone/008-sport.png"],
+            ["Mathematiques", "/assets/images/icone/003-design-tool.png"],
+            ["Literature", "/assets/images/icone/001-book.png"],
+            ["Physique/Chimie", "/assets/images/icone/002-atom.png"],
+            ["informatique", "/assets/images/icone/004-computer.png"],
+            ["Langues", "/assets/images/icone/006-translation.png"],
+            ["Science de la Terre", "/assets/images/icone/005-botany.png"],
+            ["Droit", "/assets/images/icone/007-auction.png"]
         ];
         $matieres = [];
         for ($i = 0; $i < count($matiersNom); $i++) {
             $matieres[$i] = new Matiere();
-            $matieres[$i]->setNom($matiersNom[$i]);
+            $matieres[$i]
+            ->setNom($matiersNom[$i][0])
+            ->setImagePath($matiersNom[$i][1]);
+
             $manager->persist($matieres[$i]);
         }
 
