@@ -13,6 +13,7 @@ use App\Entity\Niveau;
 use App\Entity\Matiere;
 use App\Entity\Creneau;
 use App\Entity\Annonce;
+use App\Entity\Commentaire;
 
 class AppFixtures extends Fixture
 {
@@ -34,7 +35,7 @@ class AppFixtures extends Fixture
         //creation des Utilisateurs
         $diplome = ["Diplome A", "Diplome B", "Diplome C", "Diplome D"];
         $users = [];
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 30; $i++) {
             $genre = $faker->randomElement(["Homme", "Femme"]);
             $prenom = $faker->firstName(($genre == "Homme") ? "male" : "female");
             $users[$i] = new User();
@@ -153,6 +154,25 @@ class AppFixtures extends Fixture
                 ->setPresentiel($faker->randomElement($Presentiels));
 
             $manager->persist($annonces[$i]);
+        }
+
+        // Creation de commentaire
+        $commentaires = [];
+        for ($i = 0; $i < 300; $i++) {
+            $source = $faker->randomElement($users);
+            $tempUsers = $users;
+            unset($tempUsers[array_search($source, $tempUsers)]);
+            $destinataire = $faker->randomElement($tempUsers);
+
+            $commentaires[$i] = new Commentaire();
+
+            $commentaires[$i]
+                ->setContenu($faker->paragraph(3, true))
+                ->setNote($faker->numberBetween(1, 5))
+                ->setSource($source)
+                ->setDestinataire($destinataire);
+
+            $manager->persist($commentaires[$i]);
         }
         $manager->flush();
     }

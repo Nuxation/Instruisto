@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\CommentaireRepository;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CommentaireRepository;
 
 /**
  * @ORM\Entity(repositoryClass=CommentaireRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Commentaire
 {
@@ -18,7 +20,7 @@ class Commentaire
     private $id;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $contenu;
 
@@ -107,5 +109,13 @@ class Commentaire
         $this->destinataire = $destinataire;
 
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreatedAtPrepresist()
+    {
+        $this->createdAt = new \DateTime();
     }
 }
