@@ -178,6 +178,7 @@ fabric.properties
 .env
 *.lock
 /.idea/*
+<<<<<<< HEAD
 
 ###> symfony/framework-bundle ###
 /.env.local
@@ -194,3 +195,6 @@ fabric.properties
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+=======
+*.iml
+>>>>>>> 341120cc8ad4a61c93e4b553ab5e1e8f72908f5f
