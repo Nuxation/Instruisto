@@ -6,21 +6,20 @@
 		</button>
 
 		<div class="collapse navbar-collapse" id="navbarColor01">
-			<ul class="navbar-nav mr-auto">
+			<ul class="navbar-nav mr-auto d-flex"></ul>
+			<ul class="navbar-nav d-flex">
 				<a href="#" class="btn btn-secondary mx-2 my-2 my-sm-0">Crée une annonce</a>
-
-				<ul class="navbar-nav mr-auto">
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-						<div class="dropdown-menu">
-							<a class="dropdown-item" href="#">Action</a>
-							<a class="dropdown-item" href="#">Another action</a>
-							<a class="dropdown-item" href="#">Something else here</a>
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="#">Separated link</a>
-						</div>
-					</li>
-				</ul>
+				<div class="dropdown">
+					<button class="btn dropdown-toggle" data-toggle="dropdown">
+						Dropdown
+					</button>
+					<div class="dropdown-menu">
+						<a href="#" class="dropdown-item">Mes Annonces</a>
+						<a href="#" class="dropdown-item">Mon profil</a>
+						<a href="#" class="dropdown-item">Mes messages</a>
+						<a href="#" class="dropdown-item">Se déconnecter</a>
+					</div>
+				</div>
 			</ul>
 
 		</div>
