@@ -23,7 +23,6 @@ class AnnonceController extends AbstractController
         return $this->render('annonce/index.html.twig',['matieres' => $matiere]);
     }
 
-
     /**
      * @Route("/annonce/search", name="index_search_matiere")
      */
