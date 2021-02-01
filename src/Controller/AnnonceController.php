@@ -23,6 +23,7 @@ class AnnonceController extends AbstractController
     	$form->handleRequest($request);
     	if ($form->isSubmitted() && $form->isValid()) {
     		$entityManager = $this->getDoctrine()->getManager();
+            $annonce->setAuteur($this->getUser());
     		$entityManager->persist($annonce);
     		$entityManager->flush();
     		return $this->redirectToRoute('annonce_display', array('id' => $annonce->getId()));
