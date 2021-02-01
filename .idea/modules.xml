@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Instuisto.iml" filepath="$PROJECT_DIR$/Instuisto.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Instruisto.iml" filepath="$PROJECT_DIR$/.idea/Instruisto.iml" />
     </modules>
   </component>
 </project>
