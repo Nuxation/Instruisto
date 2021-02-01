@@ -7,9 +7,15 @@
 	<div class="collapse navbar-collapse" id="navbarColor01">
 		<ul class="navbar-nav mr-auto"></ul>
 		<div class="form-inline my-2 my-lg-0">
-
-			<a href="#" class="btn btn-primary mx-2 my-2 my-sm-0" >Se connecter</a>
-			<a href="{{path('app_register')}}" class="btn btn-secondary mx-2 my-2 my-sm-0">S'inscrire</a>
+			{% if  app.user %}
+				<a href="{{ path('app_profile', {'id' : app.user.id}) }}" class="btn btn-primary mx-2 my-2 my-sm-0" >
+					<img class="img-thumbnail rounded-circle w-25 mx-2" src="{{ app.user.avatar }}" alt="">
+					{{ app.user.prenom | capitalize }}</a>
+				<a href="{{path('app_logout')}}" class="btn btn-secondary mx-2 my-2 my-sm-0">Deconnexion</a>
+			{% else %}
+				<a href="{{ path('app_login') }}" class="btn btn-primary mx-2 my-2 my-sm-0" >Se connecter</a>
+				<a href="{{path('app_register')}}" class="btn btn-secondary mx-2 my-2 my-sm-0">S'inscrire</a>
+			{% endif %}
 		</div>
 	</div>
 </nav>
