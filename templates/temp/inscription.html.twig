@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page d'acceuil{% endblock %}
+
+{% block body %}
+
+    <legend>S'inscrire <br> C'est rapide et facile</legend>
+
+    <div class="col-lg-4">
+        <label for="Nom">Nom</label>
+        <input type="string" class="form-control" id="Nom" placeholder="Nom">
+    </div>
+    <div class="col-lg-4">
+        <label for="Prenom">Prénom</label>
+        <input type="string" class="form-control" id="Prenom" placeholder="Prénom">
+    </div>
+    <div class="col-lg-6">
+        <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="Date">Date de naissance</label>
+        <input type="date" class="form-control" id="Date" placeholder="jj-mm-yyyy">
+    </div>
+    </div>
+    <div class="col-sm-6">
+        <button class="btn btn-primary mx-2 my-2 my-sm-0">S'inscrire</button>
+    </div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html.twig" %}
+{% block title %}
+      {% for matiere in matiere %}
+          <tr>
+              <td>{{ matiere }}</td>
+          </tr>
+      {% endfor %}
+{% endblock %}
+{% block body %}
+    <table>
+        <thead>
+        <tr>
+            <th>Annonces</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% set matiereID =annonce.matiere %}
+        {% for annonce in annonce %}
+            <tr>
+                <td>{{ annonce }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <p>
+        <a href="{{ path('annonce_add') }}" >Ajouter une annonce</a>
+    </p>
+{% endblock %}
