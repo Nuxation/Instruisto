@@ -178,4 +178,4 @@ fabric.properties
 .env
 *.lock
 /.idea/*
-*.iml
+/*.iml
