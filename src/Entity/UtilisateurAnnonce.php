@@ -4,9 +4,14 @@ namespace App\Entity;
 
 use App\Repository\UtilisateurAnnonceRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=UtilisateurAnnonceRepository::class)
+ * @UniqueEntity(
+ * fields={"candidat", "annonce", "statusCandidat"},
+ * message="doublon"
+ * )
  */
 class UtilisateurAnnonce
 {

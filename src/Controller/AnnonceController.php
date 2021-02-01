@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Annonce;
+use App\Entity\StatusCandidat;
+use App\Entity\UtilisateurAnnonce;
 use App\Form\AnnonceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
@@ -101,5 +103,23 @@ class AnnonceController extends AbstractController
         return $this->redirectToRoute('accueil');
     }
 
+    /**
+     * @Route("/annonce/postuler/{id}", name="annonce_postuler")
+     */
+    public function postulerAnnonce($id, Request $request): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $annonce = $this->getDoctrine()->getRepository(Annonce::class)->find($id);
+        $auteurAnnonce = $annonce->getAuteur();
+        $postuleurAnnonce = $this->getUser();
+        $statut = $this->getDoctrine()->getRepository(StatusCandidat::class)->findByNom("En attente");
+        $ua = new UtilisateurAnnonce();
+        $ua->setCandidat($postuleurAnnonce);
+        $ua->setAnnonce($annonce);
+        $ua->setStatusCandidat($statut[0]);
+        $entityManager->persist($ua);
+        $entityManager->flush();
+        return $this->redirectToRoute('accueil');
+    }
 
 }
