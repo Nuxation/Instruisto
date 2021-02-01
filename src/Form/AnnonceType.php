@@ -7,6 +7,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class AnnonceType extends AbstractType
 {
@@ -15,8 +17,12 @@ class AnnonceType extends AbstractType
         $builder
             ->add('titre')
             ->add('description')
-            ->add('prix')
-            ->add('dureeEnMin')
+            ->add('prix', NumberType::class)
+            ->add('dureeEnMin', IntegerType::class, [
+                'attr' => [
+                'min' => 5,
+                'max' => 500
+            ]])
             ->add('lieux')
             ->add('matiere')
             ->add('presentiel')
