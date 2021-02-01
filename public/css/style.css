@@ -3,7 +3,9 @@
     width: 100vmax;
 }
 
-
+img.avatar{
+    height: 40px;
+}
 .media-style {
     display: flex;
     justify-content: center;
@@ -18,5 +20,4 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
 }
