@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Annonce;
 use App\Entity\StatusCandidat;
 use App\Entity\UtilisateurAnnonce;
+use App\Entity\Message;
 use App\Form\AnnonceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
@@ -123,7 +124,12 @@ class AnnonceController extends AbstractController
         $ua->setCandidat($postuleurAnnonce);
         $ua->setAnnonce($annonce);
         $ua->setStatusCandidat($statut[0]);
+
+        $message = new Message($postuleurAnnonce, $auteurAnnonce);
+        $message->setContenu($postuleurAnnonce." se propose en tant que tuteur de ".$auteurAnnonce." pour l'annonce suivante : ".$annonce->getTitre());
+
         $entityManager->persist($ua);
+        $entityManager->persist($message);
         $entityManager->flush();
         return $this->redirectToRoute('annonce_display', [
             'id' => $id
