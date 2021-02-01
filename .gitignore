@@ -177,4 +177,4 @@ fabric.properties
 /var/*
 .env
 *.lock
-/.idea
+/.idea/*
