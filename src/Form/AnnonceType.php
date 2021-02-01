@@ -22,7 +22,6 @@ class AnnonceType extends AbstractType
             ->add('presentiel')
             ->add('niveau')
             ->add('statusAnnonce')
-            ->add('auteur')
         ;
     }
 
