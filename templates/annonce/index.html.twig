@@ -24,7 +24,7 @@
                 {%  if matieres is defined %}
                     {%  for matiere in matieres %}
                         <option value="{{ matiere.id }}"
-                                {% if matiere.id == currentM %}
+                                {% if currentM is defined and matiere.id == currentM %}
                                     selected
                                 {% endif %}
                         >
