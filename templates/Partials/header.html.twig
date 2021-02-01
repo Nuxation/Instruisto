@@ -1,15 +1,42 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
-	<a class="navbar-brand" href="{{path('accueil')}}"><img src="{{ asset('assets/images/icone/Logo_v2.png') }}" alt="" height="50px"></a>
-	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-		<span class="navbar-toggler-icon"></span>
-	</button>
+	{% if is_granted('ROLE_USER') %}
+		<a class="navbar-brand" href="{{path('accueil')}}"><img src="{{ asset('assets/images/icone/Logo_v2.png') }}" alt="" height="50px"></a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
 
-	<div class="collapse navbar-collapse" id="navbarColor01">
-		<ul class="navbar-nav mr-auto"></ul>
-		<div class="form-inline my-2 my-lg-0">
+		<div class="collapse navbar-collapse" id="navbarColor01">
+			<ul class="navbar-nav mr-auto">
+				<a href="#" class="btn btn-secondary mx-2 my-2 my-sm-0">Crée une annonce</a>
 
-			<a href="#" class="btn btn-primary mx-2 my-2 my-sm-0" >Se connecter</a>
-			<a href="{{path('app_register')}}" class="btn btn-secondary mx-2 my-2 my-sm-0">S'inscrire</a>
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" href="#">Action</a>
+							<a class="dropdown-item" href="#">Another action</a>
+							<a class="dropdown-item" href="#">Something else here</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="#">Separated link</a>
+						</div>
+					</li>
+				</ul>
+			</ul>
+
 		</div>
-	</div>
+	{% else %}
+		<a class="navbar-brand" href="{{path('accueil')}}"><img src="{{ asset('assets/images/icone/Logo_v2.png') }}" alt="" height="50px"></a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarColor01">
+			<ul class="navbar-nav mr-auto"></ul>
+			<div class="form-inline my-2 my-lg-0">
+
+				<a href="{{ path('app_login') }}" class="btn btn-primary mx-2 my-2 my-sm-0">Se connecter</a>
+				<a href="{{path('app_register')}}" class="btn btn-secondary mx-2 my-2 my-sm-0">S'inscrire</a>
+			</div>
+		</div>
+	{% endif %}
 </nav>

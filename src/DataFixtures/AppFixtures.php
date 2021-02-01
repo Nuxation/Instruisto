@@ -6,14 +6,17 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Faker\Factory;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+
+use App\Service\Normalize;
 use App\Entity\User;
+use App\Entity\StatusCandidat;
 use App\Entity\StatusAnnonce;
 use App\Entity\Presentiel;
 use App\Entity\Niveau;
 use App\Entity\Matiere;
 use App\Entity\Creneau;
-use App\Entity\Annonce;
 use App\Entity\Commentaire;
+use App\Entity\Annonce;
 
 class AppFixtures extends Fixture
 {
@@ -42,7 +45,7 @@ class AppFixtures extends Fixture
             $users[$i] = new User();
             $users[$i]->setNom($faker->lastName)
                 ->setPrenom($prenom)
-                ->setEmail($prenom . '-' . $faker->lastName . '@etud.fr')
+                ->setEmail(Normalize::normalize($prenom . '.' . $faker->lastName . '@etud.fr'))
                 ->setTelephone($faker->phoneNumber())
                 ->setGenre($genre)
                 ->setAvatar("https://randomuser.me/api/portraits/{$genreAvatar}/{$faker->numberBetween(0, 99)}.jpg")
@@ -203,6 +206,16 @@ class AppFixtures extends Fixture
                 ->setDestinataire($destinataire);
 
             $manager->persist($commentaires[$i]);
+        }
+
+        $statusCandidatNom = [
+            "En attente", "Validé", "Rejeté"
+        ];
+        $StatusCandidat = [];
+        for ($i = 0; $i < count($statusCandidatNom); $i++) {
+            $StatusCandidat[$i] = new StatusCandidat();
+            $StatusCandidat[$i]->setNom($statusCandidatNom[$i]);
+            $manager->persist($StatusCandidat[$i]);
         }
 
         $manager->flush();
