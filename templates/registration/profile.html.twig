@@ -9,6 +9,7 @@
         .color-form {
             background-color: lightgray;
         }
+
     </style>
     <div class="d-flex justify-content-between">
         <div class="text-center border mx-2 p-4">
@@ -34,7 +35,7 @@
                     </div>
                     <div class="my-2">
                         <h5>Email</h5>
-                        <h5 class="border bg-white  ">{{ app.user.email }}</h5>
+                        <h5 class="border bg-white">{{ app.user.email }}</h5>
                     </div>
                     <div class="my-2">
                         <h5>Numéro de telephone</h5>
@@ -71,9 +72,9 @@
             </div>
         </div>
         <div>
-            <div class="border p-5 my-5 bg-white">
-                <h6>Mon Calendrier</h6>
-                <p></p>
+            <div class="border p-5 my-5 bg-white w-100">
+                <h6 class="text-center">Mon Calendrier</h6>
+                <div id="calendrier"></div>
             </div>
             <div class="border p-5 bg-white">
                 <h6>Changer mon mot de passe</h6>
@@ -81,4 +82,33 @@
             </div>
         </div>
     </div>
+{% endblock %}
+{% block javascripts %}
+<script>
+    window.onload = () => {
+        let calnedarElt = document.querySelector("#calendrier")
+
+        let calendar = new FullCalendar.Calendar(calnedarElt, {
+            themeSystem: 'bootstrap',
+            height: 300,
+            contentHeight: 600,
+            initialView: 'dayGridMonth',
+            locale : 'fr',
+            timeZone: 'Europe/Paris',
+            headerToolbar: {
+                end: 'dayGridMonth,timeGridWeek'
+            },
+            events: [
+                {
+                    id: '{% if creneau %}{{ creneau.id }}{% endif %}',
+                    title: '{{ annonceTitre }}',
+                    start: '{{ start }}',
+                    end: '{{ end }}'
+                }
+            ]
+
+        });
+        calendar.render();
+    }
+</script>
 {% endblock %}
