@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Matiere;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,6 +13,26 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class AnnonceController extends AbstractController
 {
+    /**
+     * @Route("/annonce", name="index")
+     */
+    public function index() {
+        $matiere = $this->getDoctrine()->getRepository(Matiere::class)->findAll();
+        return $this->render('annonce/index.html.twig',['matieres' => $matiere]);
+    }
+
+
+    /**
+     * @Route("/annonce/search", name="index_search_matiere")
+     */
+    public function search(Request $request) {
+        $listMatiere = $this->getDoctrine()->getRepository(Matiere::class)->findAll();
+        $matiere = $request->request->get('matiere');
+        $annonce = $this->getDoctrine()->getRepository(Annonce::class)->findByMatiere($matiere);
+        return $this->render('annonce/index.html.twig',['annonces' => $annonce,'matieres'=>$listMatiere, 'currentM'=>$matiere]);
+    }
+
+
     /**
      * @Route("/annonce/add", name="annonce_add")
      */
@@ -79,4 +100,6 @@ class AnnonceController extends AbstractController
     	$entityManager->flush();
         return $this->redirectToRoute('accueil');
     }
+
+
 }

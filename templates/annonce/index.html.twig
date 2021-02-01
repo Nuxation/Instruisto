@@ -1,29 +1,49 @@
 {% extends "base.html.twig" %}
-{% block title %}
-      {% for matiere in matiere %}
-          <tr>
-              <td>{{ matiere }}</td>
-          </tr>
-      {% endfor %}
-{% endblock %}
+
 {% block body %}
-    <table>
-        <thead>
-        <tr>
-            <th>Annonces</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% set matiereID =annonce.matiere %}
-        {% for annonce in annonce %}
-            <tr>
-                <td>{{ annonce }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+<div class="row">
+    <div class="col-1"></div>
+    <div class="col-6">
+        {%  if annonces is defined %}
+            {% for annonce in annonces %}
+                <div class="card border-primary mb-3">
+                    <div class="card-body">
+                        <h4 class="card-title">
+                            <a href="{{ path('annonce_display', {'id' : annonce.id}) }}" > {{ annonce }}</a>
+                        </h4>
+                        <p class="card-text"></p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="col-4">
+        <form id="search" action="{{ path('index_search_matiere') }}" method="post" name="searchByMatiere">
+            <label for="matiere">Matieres :</label>
+            <select id="matiere" name="matiere" form="search">
+                {%  if matieres is defined %}
+                    {%  for matiere in matieres %}
+                        <option value="{{ matiere.id }}"
+                                {% if matiere.id == currentM %}
+                                    selected
+                                {% endif %}
+                        >
+                            {{ matiere.nom }}
+                        </option>
+                    {% endfor %}
+                {% endif %}
+            </select>
+            <br />
+            <input type="submit" name="search" value="Rechercher" />
+        </form>
+    </div>
+    <div class="col-1"></div>
 
     <p>
         <a href="{{ path('annonce_add') }}" >Ajouter une annonce</a>
     </p>
+</div>
 {% endblock %}
+
+
+
