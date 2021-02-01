@@ -78,9 +78,9 @@ class AppFixtures extends Fixture
             ["Mathematiques", "/assets/images/icone/003-design-tool.png"],
             ["Literature", "/assets/images/icone/001-book.png"],
             ["Physique/Chimie", "/assets/images/icone/002-atom.png"],
-            ["informatique", "/assets/images/icone/004-computer.png"],
+            ["Informatique", "/assets/images/icone/004-computer.png"],
             ["Langues", "/assets/images/icone/006-translation.png"],
-            ["Science de la Terre", "/assets/images/icone/005-botany.png"],
+            ["S.V.T", "/assets/images/icone/005-botany.png"],
             ["Droit", "/assets/images/icone/007-auction.png"]
         ];
         $matieres = [];
