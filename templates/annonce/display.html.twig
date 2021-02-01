@@ -17,10 +17,15 @@
 		<p> Niveau : {{ annonce.niveau }} </p>
 		<p> Status annonce : {{ annonce.statusAnnonce }} </p>
 		<p> Auteur : {{ annonce.auteur }} </p>
-		<p><a href="{{ path('annonce_update', { 'id': annonce.id }) }}">
- modifier l'annonce</a></p>
- 		<p><a href="{{ path('annonce_delete', { 'id': annonce.id }) }}">
- supprimer l'annonce</a></p>
+		{% if annonce.auteur == app.user %}
+			<p><a href="{{ path('annonce_update', { 'id': annonce.id }) }}">
+	 modifier l'annonce</a></p>
+	 		<p><a href="{{ path('annonce_delete', { 'id': annonce.id }) }}">
+	 supprimer l'annonce</a></p>
+	 	{% else %}
+  		<p><a href="{{ path('annonce_postuler', { 'id': annonce.id }) }}">
+ postuler à l'annonce</a></p>
+ 		{% endif %}
 </div>
 
 {% endblock %}
