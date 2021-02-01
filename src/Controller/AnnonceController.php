@@ -84,11 +84,18 @@ class AnnonceController extends AbstractController
      * @Route("/annonce/display/{id}", name="annonce_display")
      */
     public function display($id) {
-    	$annonce = $this->getDoctrine()->getRepository(Annonce::class)->find($id);
-		if(!$annonce)
-			throw $this->createNotFoundException('Annonce [id='.$id.'] inexistante');
-		return $this->render('annonce/display.html.twig', array('annonce' => $annonce));
-	}
+        $annonce = $this->getDoctrine()->getRepository(Annonce::class)->find($id);
+        if(!$annonce)
+            throw $this->createNotFoundException('Annonce [id='.$id.'] inexistante');
+        $ua = $this->getDoctrine()->getRepository(UtilisateurAnnonce::class)->findByAnnonce($annonce);
+        $aPostulé = false;
+        foreach ($ua as $u) {
+            if ($u->getCandidat()->getId() == $this->getUser()->getId()) {
+                $aPostulé = true;
+            }
+        }
+        return $this->render('annonce/display.html.twig', array('annonce' => $annonce, 'aPostulé' => $aPostulé));
+    }
 
 	/**
      * @Route("/annonce/delete/{id}", name="annonce_delete")
@@ -118,7 +125,29 @@ class AnnonceController extends AbstractController
         $ua->setStatusCandidat($statut[0]);
         $entityManager->persist($ua);
         $entityManager->flush();
-        return $this->redirectToRoute('accueil');
+        return $this->redirectToRoute('annonce_display', [
+            'id' => $id
+        ]);
     }
 
+    /**
+     * @Route("/annonce/desister/{id}", name="annonce_desister")
+     */
+    public function desisterAnnonce($id, Request $request): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $annonce = $this->getDoctrine()->getRepository(Annonce::class)->find($id);
+        $auteurAnnonce = $annonce->getAuteur();
+        $postuleurAnnonce = $this->getUser();
+        $ua = $this->getDoctrine()->getRepository(UtilisateurAnnonce::class)->findByAnnonce($annonce);
+        foreach ($ua as $u) {
+            if ($u->getCandidat()->getId() == $this->getUser()->getId()) {
+                $entityManager->remove($u);
+                $entityManager->flush();
+            }
+        }
+        return $this->redirectToRoute('annonce_display', [
+            'id' => $id
+        ]);
+    }
 }

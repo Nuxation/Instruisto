@@ -23,8 +23,13 @@
 	 		<p><a href="{{ path('annonce_delete', { 'id': annonce.id }) }}">
 	 supprimer l'annonce</a></p>
 	 	{% else %}
-  		<p><a href="{{ path('annonce_postuler', { 'id': annonce.id }) }}">
- postuler à l'annonce</a></p>
+  		<p>
+  			{% if aPostulé %}
+  			<a href="{{ path('annonce_desister', { 'id': annonce.id }) }}"> se désister de l'annonce</a>
+  			{% else %}
+  			<a href="{{ path('annonce_postuler', { 'id': annonce.id }) }}"> postuler à l'annonce</a>
+  			{% endif %}
+ 		</p>
  		{% endif %}
 </div>
 
