@@ -8,7 +8,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Annonce;
+use App\Entity\Creneau;
 use App\Entity\StatusCandidat;
+use App\Entity\StatusAnnonce;
 use App\Entity\UtilisateurAnnonce;
 use App\Entity\Message;
 use App\Form\AnnonceType;
@@ -47,6 +49,8 @@ class AnnonceController extends AbstractController
     	if ($form->isSubmitted() && $form->isValid()) {
     		$entityManager = $this->getDoctrine()->getManager();
             $annonce->setAuteur($this->getUser());
+            $statut = $this->getDoctrine()->getRepository(StatusAnnonce::class)->findByNom("recherche_enseignant");
+            $annonce->setStatusAnnonce($statut[0]);
     		$entityManager->persist($annonce);
     		$entityManager->flush();
     		return $this->redirectToRoute('annonce_display', array('id' => $annonce->getId()));
@@ -95,7 +99,8 @@ class AnnonceController extends AbstractController
                 $aPostulé = true;
             }
         }
-        return $this->render('annonce/display.html.twig', array('annonce' => $annonce, 'aPostulé' => $aPostulé));
+        $creneaux = $this->getDoctrine()->getRepository(Creneau::class)->findByAnnonce($annonce);
+        return $this->render('annonce/display.html.twig', array('annonce' => $annonce, 'aPostulé' => $aPostulé, 'creneaux' => $creneaux));
     }
 
 	/**

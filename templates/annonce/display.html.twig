@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ajout d'une annonce{% endblock %}
+{% block title %}Consultation d'une annonce{% endblock %}
 
 {% block body %}
 
@@ -17,7 +17,17 @@
 		<p> Niveau : {{ annonce.niveau }} </p>
 		<p> Status annonce : {{ annonce.statusAnnonce }} </p>
 		<p> Auteur : {{ annonce.auteur }} </p>
+		{% if creneaux is defined %}
+		<p>Créneaux :</p>
+			{% for creneau in creneaux %}
+				{{creneau.getDebutAt|date("H:i:s, d/m/Y")}}
+				</br>
+				{{creneau.getFinAt|date("H:i:s, d/m/Y")}}
+			{% endfor %}
+		{% endif %}
 		{% if annonce.auteur == app.user %}
+			<p><a href="{{ path('annonce_update', { 'id': annonce.id }) }}">
+	 ajouter un créneau</a></p>
 			<p><a href="{{ path('annonce_update', { 'id': annonce.id }) }}">
 	 modifier l'annonce</a></p>
 	 		<p><a href="{{ path('annonce_delete', { 'id': annonce.id }) }}">
