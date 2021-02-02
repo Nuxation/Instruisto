@@ -122,7 +122,7 @@ class AnnonceController extends AbstractController
             $entityManager->flush();
             
             for ($i=0; $i <  count($annonce->getCreneaus()); $i++) { 
-                $annonce->getCreneaus()[$i]->setAnnonce($annoncegetId());
+                $annonce->getCreneaus()[$i]->setAnnonce($annonce);
             }
             $entityManager->flush();
             return $this->redirectToRoute('annonce_display', array('id' => $annonce->getId()));
