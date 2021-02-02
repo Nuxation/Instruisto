@@ -152,7 +152,6 @@
                             </div>
                         </div>
 
-
                         <div class="form-group">
                             <H4>Données personnelles </H4><br>
                             {{ form_label(formProfil.prenom, 'Prénom', {'label_attr': {'class': 'col-form-label'}}) }}
@@ -179,7 +178,6 @@
                             <p id="textSupprimerCompte">Attention cette action est irréversible</p>
                             <a id="buttonSupprimerCompte" href="">Supprimer mon compte </a>
                         </div>
-
                     </div>
                 </div>
             <div class="col-sm">
@@ -200,9 +198,7 @@
                     <td>{{ form_row(formProfil.password) }}</td>
                     <td id="genre">{{ form_row(formProfil.genre) }}</td>
                     <button id="changerBotton" type="submit" class="btn btn-danger">Changer</button>
-
                 </div>
-
             </div>
         </div>
         {{ form_end(formProfil) }}
