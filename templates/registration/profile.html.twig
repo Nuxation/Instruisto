@@ -9,6 +9,10 @@
         .color-form {
             background-color: lightgray;
         }
+        .width_reglage {
+            width: 40%;
+        }
+
     </style>
     <div class="d-flex justify-content-between">
         <div class="text-center border mx-2 p-4">
@@ -34,7 +38,7 @@
                     </div>
                     <div class="my-2">
                         <h5>Email</h5>
-                        <h5 class="border bg-white  ">{{ app.user.email }}</h5>
+                        <h5 class="border bg-white">{{ app.user.email }}</h5>
                     </div>
                     <div class="my-2">
                         <h5>Numéro de telephone</h5>
@@ -55,15 +59,15 @@
                 <button class="btn btn-warning">Supprimer mon compte</button>
             </div>
         </div>
-        <div class="mx-2">
-            <div class="border p-4 my-5 bg-white">
-                <h6>Texte de Presentation</h6>
+        <div class="width_reglage">
+            <div class="border my-5 bg-white mx-2">
+                <h4>Texte de Presentation</h4>
                 <p>{% if  app.user.presentation  %}
                         {{ app.user.presentation }}
                     {% else %}Bonjour je suis {{ app.user }}{% endif %}</p>
             </div>
-            <div class="border p-4 bg-white">
-                <h6>Etudes et Diplomes</h6>
+            <div class="border bg-white mx-2">
+                <h4>Etudes et Diplomes</h4>
                 <p class="text-center">{% if  app.user.etudeEtDiplome  %}
                         {{ app.user.etudeEtDiplome }}
                     {% else %}Pas DIPLOME{% endif %}
@@ -71,9 +75,9 @@
             </div>
         </div>
         <div>
-            <div class="border p-5 my-5 bg-white">
-                <h6>Mon Calendrier</h6>
-                <p></p>
+            <div class="border p-5 my-5 bg-white w-100">
+                <h6 class="text-center">Mon Calendrier</h6>
+                <div id="calendrier"></div>
             </div>
             <div class="border p-5 bg-white">
                 <h6>Changer mon mot de passe</h6>
@@ -81,4 +85,33 @@
             </div>
         </div>
     </div>
+{% endblock %}
+{% block javascripts %}
+<script>
+    window.onload = () => {
+        let calnedarElt = document.querySelector("#calendrier")
+
+        let calendar = new FullCalendar.Calendar(calnedarElt, {
+            themeSystem: 'bootstrap',
+            height: 300,
+            contentHeight: 600,
+            initialView: 'dayGridMonth',
+            locale : 'fr',
+            timeZone: 'Europe/Paris',
+            headerToolbar: {
+                end: 'dayGridMonth,timeGridWeek'
+            },
+            events: [
+                {
+                    id: '{% if creneau %}{{ creneau.id }}{% endif %}',
+                    title: '{{ annonceTitre }}',
+                    start: '{{ start }}',
+                    end: '{{ end }}'
+                }
+            ]
+
+        });
+        calendar.render();
+    }
+</script>
 {% endblock %}

@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Repository\AnnonceRepository;
+use App\Repository\CreneauRepository;
 use App\Repository\UserRepository;
 use App\Security\AppCustomeAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -54,11 +56,42 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/profile/{id}", name="app_profile")
      */
-    public function profile($id, UserRepository $userRepository)
+    public function profile($id, UserRepository $userRepository, AnnonceRepository $annonceRepository, CreneauRepository $creneauRepository)
     {
         $user = $userRepository->find($id);
+
+        // Pour le Calendrier :
+        $annonces = $annonceRepository->find($user);
+
+        $crenau = $creneauRepository->find($annonces);
+
+        //dd($annonces->getStatusAnnonce()->getnom());
+
+        $annonceNom = $annonces->getStatusAnnonce()->getnom();
+
+            $start = $crenau->getDebutAt()->format(\DateTime::ISO8601);
+            $end = $crenau->getFinAt()->format(\DateTime::ISO8601);
+            $annonceTitre = $annonces->getTitre();
+
+
+
+        if ( $annonceNom == "cours_fini" || $annonceNom == "enseignant_validé") {
+            $crenau = $creneauRepository->find($annonces);
+        }
+
+
+
+
+
+        //dd($annonceTitre);
+
+
         return $this->render('registration/profile.html.twig', [
-            'user' => $user
+            'user' => $user,
+            'creneau' => $crenau,
+            'annonceTitre' => $annonceTitre,
+            'start' => $start,
+            'end' => $end
         ]);
     }
 }
