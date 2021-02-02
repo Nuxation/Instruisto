@@ -11,14 +11,27 @@
 <div class="row">
     <div class="col-1"></div>
     <div class="col-6">
-        {%  if annonces is defined %}
-            {% for annonce in annonces %}
+        {%  if annoncesPubliéesEleve is defined %}
+            {% for annonce in annoncesPubliéesEleve %}
                 <div class="card border-primary mb-3">
                     <div class="card-body">
                         <h4 class="card-title">
                             <a href="{{ path('annonce_display', {'id' : annonce.id}) }}" > {{ annonce }}</a>
                         </h4>
-                        <p class="card-text"></p>
+                        <a href="{{path('candidatures', {'id' : annonce.id})}}" class="btn btn-primary mx-2 my-2 my-sm-0">Candidatures</a>
+                        <p class="card-text">Statut : élève</p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {%  if annoncesPubliéesTuteur is defined %}
+            {% for annonce in annoncesPubliéesTuteur %}
+                <div class="card border-primary mb-3">
+                    <div class="card-body">
+                        <h4 class="card-title">
+                            <a href="{{ path('annonce_display', {'id' : annonce.id}) }}" > {{ annonce }}</a>
+                        </h4>
+                        <p class="card-text">Statut : tuteur</p>
                     </div>
                 </div>
             {% endfor %}
@@ -27,6 +40,3 @@
     <div class="col-5"></div>
 </div>
 {% endblock %}
-
-
-

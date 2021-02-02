@@ -13,6 +13,7 @@ use App\Entity\StatusCandidat;
 use App\Entity\StatusAnnonce;
 use App\Entity\UtilisateurAnnonce;
 use App\Entity\Message;
+use App\Entity\User;
 use App\Form\AnnonceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
@@ -23,7 +24,14 @@ class AnnonceController extends AbstractController
      */
     public function index() {
         $matiere = $this->getDoctrine()->getRepository(Matiere::class)->findAll();
-        $annonces = $this->getDoctrine()->getRepository(Annonce::class)->findAll();
+        $a = $this->getDoctrine()->getRepository(Annonce::class)->findAll();
+        $statutAnnonce = $this->getDoctrine()->getRepository(StatusAnnonce::class)->findByNom("recherche_enseignant");
+        $annonces = array();
+        foreach ($a as $annonce) {
+            if ($annonce->getStatusAnnonce()->getId() == $statutAnnonce[0]->getId()) {
+                $annonces[] = $annonce;
+            }
+        }
         $annoncesToDisplay = array();
         for ($i = 0; $i < 5; $i++) {
             if (isset($annonces[$i])) {
@@ -57,19 +65,28 @@ class AnnonceController extends AbstractController
     public function search2($matiere, $page, Request $request) {
         $listMatiere = $this->getDoctrine()->getRepository(Matiere::class)->findAll();
         if ($matiere=="all") {
-            $annonce = $this->getDoctrine()->getRepository(Annonce::class)->findAll();
+            $a = $this->getDoctrine()->getRepository(Annonce::class)->findAll();
         }
         else {
-            $annonce = $this->getDoctrine()->getRepository(Annonce::class)->findByMatiere($matiere);
+            $a = $this->getDoctrine()->getRepository(Annonce::class)->findByMatiere($matiere);
         }
-        $nbAnnonces = sizeof($annonce);
+
+        $statutAnnonce = $this->getDoctrine()->getRepository(StatusAnnonce::class)->findByNom("recherche_enseignant");
+        $annonces = array();
+        foreach ($a as $annonce) {
+            if ($annonce->getStatusAnnonce()->getId() == $statutAnnonce[0]->getId()) {
+                $annonces[] = $annonce;
+            }
+        }
+
+        $nbAnnonces = sizeof($annonces);
         $nbPages = ceil($nbAnnonces / 5);
         $annoncesToDisplay = array();
         if (isset($page)) {
             if ($page <= $nbPages) {
             for ($i = 5 * ($page - 1); $i < 5 * $page; $i++) {
-                if (isset($annonce[$i])) {
-                    $annoncesToDisplay[] = $annonce[$i];
+                if (isset($annonces[$i])) {
+                    $annoncesToDisplay[] = $annonces[$i];
                 }
             }
         }
@@ -77,7 +94,12 @@ class AnnonceController extends AbstractController
             $page = 1;
         }
         }
-        return $this->render('annonce/index.html.twig',['annonces' => $annoncesToDisplay,'matieres'=>$listMatiere, 'currentM'=>$matiere, 'currentPage' => $page, 'nbPages' => $nbPages]);
+        return $this->render('annonce/index.html.twig',[
+            'annonces' => $annoncesToDisplay,
+            'matieres'=>$listMatiere, 
+            'currentM'=>$matiere, 
+            'currentPage' => $page, 
+            'nbPages' => $nbPages]);
     }
 
 
@@ -86,12 +108,12 @@ class AnnonceController extends AbstractController
      */
     public function add(Request $request): Response
     {
-    	$annonce = new Annonce;
-    	$form = $this->createForm(AnnonceType::class, $annonce);
-    	$form->add('submit', SubmitType::class, array('label' => 'Ajouter'));
-    	$form->handleRequest($request);
-    	if ($form->isSubmitted() && $form->isValid()) {
-    		$entityManager = $this->getDoctrine()->getManager();
+        $annonce = new Annonce;
+        $form = $this->createForm(AnnonceType::class, $annonce);
+        $form->add('submit', SubmitType::class, array('label' => 'Ajouter'));
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
             $annonce->setAuteur($this->getUser());
             $statut = $this->getDoctrine()->getRepository(StatusAnnonce::class)->findByNom("recherche_enseignant");
             $annonce->setStatusAnnonce($statut[0]);
@@ -103,13 +125,13 @@ class AnnonceController extends AbstractController
                 $annonce->getCreneaus()[$i]->setAnnonce($annonce);
             }
             $entityManager->flush();
-    		return $this->redirectToRoute('annonce_display', array('id' => $annonce->getId()));
-    	}
+            return $this->redirectToRoute('annonce_display', array('id' => $annonce->getId()));
+        }
         return $this->render('annonce/add.html.twig',
-    		array(
-    			'annonceForm' => $form->createView(),
-    			'action' => 'Créer une annonce'
-    		));
+            array(
+                'annonceForm' => $form->createView(),
+                'action' => 'Créer une annonce'
+            ));
 
     }
 
@@ -118,21 +140,21 @@ class AnnonceController extends AbstractController
      */
     public function update($id, Request $request): Response
     {
-    	$annonce = $this->getDoctrine()->getRepository(Annonce::class)->find($id);
-    	$form = $this->createForm(AnnonceType::class, $annonce);
-    	$form->add('submit', SubmitType::class, array('label' => 'Modifier'));
-    	$form->handleRequest($request);
-    	if ($form->isSubmitted() && $form->isValid()) {
-    		$entityManager = $this->getDoctrine()->getManager();
-    		$entityManager->persist($annonce);
-    		$entityManager->flush();
-    		return $this->redirectToRoute('annonce_display', array('id' => $id));
-    	}
+        $annonce = $this->getDoctrine()->getRepository(Annonce::class)->find($id);
+        $form = $this->createForm(AnnonceType::class, $annonce);
+        $form->add('submit', SubmitType::class, array('label' => 'Modifier'));
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($annonce);
+            $entityManager->flush();
+            return $this->redirectToRoute('annonce_display', array('id' => $id));
+        }
         return $this->render('annonce/add.html.twig',
-    		array(
-    			'annonceForm' => $form->createView(),
-    			'action' => 'Modifier une annonce'
-    		));
+            array(
+                'annonceForm' => $form->createView(),
+                'action' => 'Modifier une annonce'
+            ));
     }
 
     /**
@@ -153,15 +175,15 @@ class AnnonceController extends AbstractController
         return $this->render('annonce/display.html.twig', array('annonce' => $annonce, 'aPostulé' => $aPostulé, 'creneaux' => $creneaux));
     }
 
-	/**
+    /**
      * @Route("/annonce/delete/{id}", name="annonce_delete")
      */
-	public function delete($id, Request $request): Response
+    public function delete($id, Request $request): Response
     {
-    	$entityManager = $this->getDoctrine()->getManager();
-    	$annonce = $this->getDoctrine()->getRepository(Annonce::class)->find($id);
-    	$entityManager->remove($annonce);
-    	$entityManager->flush();
+        $entityManager = $this->getDoctrine()->getManager();
+        $annonce = $this->getDoctrine()->getRepository(Annonce::class)->find($id);
+        $entityManager->remove($annonce);
+        $entityManager->flush();
         return $this->redirectToRoute('accueil');
     }
 
@@ -224,15 +246,28 @@ class AnnonceController extends AbstractController
      */
     public function userAnnoncesPubliées() {
         $user = $this->getUser();
+
         $annonces = $this->getDoctrine()->getRepository(Annonce::class)->findByAuteur($user);
-        $annoncesPubliées = array();
+        $annoncesPubliéesEleve = array();
         foreach ($annonces as $annonce) {
             if ($annonce->getStatusAnnonce()->getNom() == "recherche_enseignant") {
-                $annoncesPubliées[] = $annonce;
+                $annoncesPubliéesEleve[] = $annonce;
             }
         }
+
+        $ua = $this->getDoctrine()->getRepository(UtilisateurAnnonce::class)->findByCandidat($user);
+        $annoncesPubliéesTuteur = array();
+        foreach ($ua as $uaf) {
+            if ($uaf->getAnnonce()->getStatusAnnonce()->getNom() == "recherche_enseignant") {
+                if ($uaf->getStatusCandidat()->getNom() != "Rejeté") {
+                    $annoncesPubliéesTuteur[] = $uaf->getAnnonce();
+                }
+            }
+        }
+
         return $this->render('annonce/annoncesPubliées.html.twig', [
-            'annonces'=>$annoncesPubliées
+            'annoncesPubliéesEleve'=>$annoncesPubliéesEleve,
+            'annoncesPubliéesTuteur'=>$annoncesPubliéesTuteur
         ]);
     }
 
@@ -242,14 +277,25 @@ class AnnonceController extends AbstractController
     public function userAnnoncesValidées() {
         $user = $this->getUser();
         $annonces = $this->getDoctrine()->getRepository(Annonce::class)->findByAuteur($user);
-        $annoncesValidées = array();
+        $annoncesValidéesEleve = array();
         foreach ($annonces as $annonce) {
             if ($annonce->getStatusAnnonce()->getNom() == "enseignant_validé") {
-                $annoncesValidées[] = $annonce;
+                $annoncesValidéesEleve[] = $annonce;
+            }
+        }
+
+        $ua = $this->getDoctrine()->getRepository(UtilisateurAnnonce::class)->findByCandidat($user);
+        $annoncesValidéesTuteur = array();
+        foreach ($ua as $uaf) {
+            if ($uaf->getAnnonce()->getStatusAnnonce()->getNom() == "enseignant_validé") {
+                if ($uaf->getStatusCandidat()->getNom() != "Rejeté") {
+                    $annoncesValidéesTuteur[] = $uaf->getAnnonce();
+                }
             }
         }
         return $this->render('annonce/annoncesValidées.html.twig', [
-            'annonces'=>$annoncesValidées
+            'annoncesValidéesEleve'=>$annoncesValidéesEleve,
+            'annoncesValidéesTuteur'=>$annoncesValidéesTuteur
         ]);
     }
 
@@ -259,14 +305,105 @@ class AnnonceController extends AbstractController
     public function userAnnoncesPassées() {
         $user = $this->getUser();
         $annonces = $this->getDoctrine()->getRepository(Annonce::class)->findByAuteur($user);
-        $annoncesPassées = array();
+        $annoncesPasséesEleve = array();
         foreach ($annonces as $annonce) {
             if ($annonce->getStatusAnnonce()->getNom() == "cours_fini") {
-                $annoncesPassées[] = $annonce;
+                $annoncesPasséesEleve[] = $annonce;
+            }
+        }
+
+        $ua = $this->getDoctrine()->getRepository(UtilisateurAnnonce::class)->findByCandidat($user);
+        $annoncesPasséesTuteur = array();
+        foreach ($ua as $uaf) {
+            if ($uaf->getAnnonce()->getStatusAnnonce()->getNom() == "cours_fini") {
+                if ($uaf->getStatusCandidat()->getNom() != "Rejeté") {
+                    $annoncesPasséesTuteur[] = $uaf->getAnnonce();
+                }
             }
         }
         return $this->render('annonce/annoncesPassées.html.twig', [
-            'annonces'=>$annoncesPassées
+            'annoncesPasséesEleve'=>$annoncesPasséesEleve,
+            'annoncesPasséesTuteur'=>$annoncesPasséesTuteur
+        ]);
+    }
+
+    /**
+     * @Route("/annonce/{id}/candidatures", name="candidatures")
+     */
+    public function candidatures($id) {
+        $annonce = $this->getDoctrine()->getRepository(Annonce::class)->find($id);
+        $candidatsua = $annonce->getUtilisateurAnnonces();
+        $candidatsUsers = array();
+        foreach ($candidatsua as $candidatua) {
+            $candidatsUsers[] = $candidatua->getCandidat();
+        }
+        return $this->render('annonce/candidats.html.twig', [
+            'annonce'=>$annonce,
+            'candidats'=>$candidatsUsers
+        ]);
+    }
+
+    /**
+     * @Route("/annonce/{id}/accepterCandidature/{candidatId}", name="accepter_candidature")
+     */
+    public function accepterCandidature($id, $candidatId) {
+        $statutValidé = $this->getDoctrine()->getRepository(StatusCandidat::class)->findByNom("Validé");
+        $statutRejeté = $this->getDoctrine()->getRepository(StatusCandidat::class)->findByNom("Rejeté");
+
+        $annonce = $this->getDoctrine()->getRepository(Annonce::class)->find($id);
+        $candidat = $this->getDoctrine()->getRepository(User::class)->find($candidatId);
+
+        if (!is_null($annonce) && !is_null($candidat)) {
+            $candidatsua = $annonce->getUtilisateurAnnonces();
+            $candidatsUsers = array();
+            foreach ($candidatsua as $candidatua) {
+                $idCandidat = $candidatua->getCandidat()->getId();
+                if ($idCandidat == $candidatId) {
+                    $candidatua->setStatusCandidat($statutValidé[0]);
+                }
+                else {
+                    $candidatua->setStatusCandidat($statutRejeté[0]);
+                }
+            }
+
+            $statutAnnonce = $this->getDoctrine()->getRepository(StatusAnnonce::class)->findByNom("enseignant_validé");
+            $annonce->setStatusAnnonce($statutAnnonce[0]);
+
+            $auteurAnnonce = $this->getUser();
+            $candidatAccepté = $candidat;
+            $message = new Message($auteurAnnonce, $candidatAccepté);
+            $message->setContenu($candidatAccepté." a été accepté en tant que tuteur de ".$auteurAnnonce." pour l'annonce suivante : ".$annonce->getTitre());
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($annonce);
+            $entityManager->persist($message);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('user_annonces_validées');
+        }
+        return $this->redirectToRoute('candidatures', [
+            'id' => $id
+        ]);
+    }
+
+    /**
+     * @Route("/annonce/archiver/{id}", name="archiver_annonce")
+     */
+    public function archiverAnnonce($id) {
+        $statutAnnonce = $this->getDoctrine()->getRepository(StatusAnnonce::class)->findByNom("cours_fini");
+
+        $annonce = $this->getDoctrine()->getRepository(Annonce::class)->find($id);
+
+        if (!is_null($annonce)) {
+            $annonce->setStatusAnnonce($statutAnnonce[0]);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($annonce);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('user_annonces_passées');
+        }
+        return $this->redirectToRoute('candidatures', [
+            'id' => $id
         ]);
     }
 }

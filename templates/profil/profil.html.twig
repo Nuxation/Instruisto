@@ -5,6 +5,7 @@
 {% block stylesheets %}
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css"> 
     <link rel="stylesheet" href="{{ asset("css/profil.css") }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.4.0/main.min.css" integrity="sha256-uq9PNlMzB+1h01Ij9cx7zeE2OR2pLAfRw3uUUOOPKdA=" crossorigin="anonymous">
     <style>
         .container{
             margin-top: 55px;
@@ -128,9 +129,6 @@
 {% endblock %}
 
 {% block body %}
-
-
-
 <body>
     <div class="container">
         {{ form_start(formProfil, {"action": path('modifier_form', {'id': idUser})}) }}
@@ -203,10 +201,10 @@
 {% endblock %}
 
 {% block javascripts %}
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.4.0/main.min.js" integrity="sha256-oenhI3DRqaPoTMAVBBzQUjOKPEdbdFFtTCNIosGwro0=" crossorigin="anonymous"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
      
     <script defer>
-
     $('#buttonSupprimerCompte').on('click', function (e) {
         e.preventDefault();
         $.confirm({
