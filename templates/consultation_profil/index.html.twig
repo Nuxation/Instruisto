@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ConsultationProfilController!{% endblock %}
+{% block stylesheets %}
+<style>
+    div#ContainerImageProfil{
+    display: flex;
+    align-items: center;
+    margin-bottom: 60px;
+    }
+
+    #imageProfil {
+        width: 129px;
+        height: 129PX;
+        margin-right: 30px;
+        border-radius: 50%;
+        margin-left: 50px;
+    }
+    #presentation, #etudesEtDiplome{
+        background-color: #ffffff;
+        height: 384px;
+        width: 607px;
+    }
+
+    #container {
+        background-color: #F3F3F3;
+        height: 900px;
+    }
+
+
+
+
+
+</style>
+{% endblock %}
+{% block body %}
+    <div id="ContainerImageProfil" class="imgProfil">
+        <img id="imageProfil" src="{{user.avatar}}" alt="">
+        <div class="nom">
+            {{ user.prenom }}
+        </div>
+    </div>
+
+    <div id="container" class="container">
+        <h3>presentation</h3>
+        <div id="presentation" class="col">{{ user.presentation }}</div>
+        <h3>Etudes et diplomes </h3>
+        <div id="etudesEtDiplome" class="col">{{ user.etudeEtDiplome }}</div>
+    </div>
+
+
+
+{% endblock %}
