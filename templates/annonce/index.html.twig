@@ -45,7 +45,7 @@
         {% endif %}
     </div>
     <div class="col-4">
-        <form id="search" action="{{ path('index_search_matiere', {'page' : 1}) }}" method="post" name="searchByMatiere">
+        <form id="search" action="{{ path('index_search_matiere') }}" method="post" name="searchByMatiere">
             <label for="matiere">Matieres :</label>
             <select id="matiere" name="matiere" form="search">
                 {%  if matieres is defined %}
