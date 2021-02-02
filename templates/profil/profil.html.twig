@@ -3,8 +3,7 @@
 {% block title %}Profil{% endblock %}
 
 {% block stylesheets %}
-    {{ parent() }}
-
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css"> 
     <link rel="stylesheet" href="{{ asset("css/profil.css") }}">
     <style>
         .container{
@@ -204,7 +203,8 @@
 {% endblock %}
 
 {% block javascripts %}
- {{ parent() }}
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+     
     <script defer language="JavaScript">
 
      $('#buttonSupprimerCompte').on('click', function (e) {
