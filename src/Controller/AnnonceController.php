@@ -23,7 +23,20 @@ class AnnonceController extends AbstractController
      */
     public function index() {
         $matiere = $this->getDoctrine()->getRepository(Matiere::class)->findAll();
-        return $this->render('annonce/index.html.twig',['matieres' => $matiere]);
+        $annonces = $this->getDoctrine()->getRepository(Annonce::class)->findAll();
+        $annoncesToDisplay = array();
+        for ($i = 0; $i < 5; $i++) {
+            if (isset($annonces[$i])) {
+                $annoncesToDisplay[] = $annonces[$i];
+            }
+        }
+        return $this->render('annonce/index.html.twig',[
+            'matieres' => $matiere, 
+            'annonces' => $annoncesToDisplay,
+            'currentPage' => 1,
+            'nbPages' => ceil(sizeof($annonces) / 5),
+            'currentM' => "all"
+        ]);
     }
 
     /**
@@ -43,7 +56,12 @@ class AnnonceController extends AbstractController
      */
     public function search2($matiere, $page, Request $request) {
         $listMatiere = $this->getDoctrine()->getRepository(Matiere::class)->findAll();
-        $annonce = $this->getDoctrine()->getRepository(Annonce::class)->findByMatiere($matiere);
+        if ($matiere=="all") {
+            $annonce = $this->getDoctrine()->getRepository(Annonce::class)->findAll();
+        }
+        else {
+            $annonce = $this->getDoctrine()->getRepository(Annonce::class)->findByMatiere($matiere);
+        }
         $nbAnnonces = sizeof($annonce);
         $nbPages = ceil($nbAnnonces / 5);
         $annoncesToDisplay = array();
