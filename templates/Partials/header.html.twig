@@ -12,12 +12,7 @@
 				<li class="nav-item dropdown mr-5">
 					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
 						<span class="align-items-end">{{app.user.prenom}}</span>
-						<img src="
-									{% if app.user.avatar is not null %}
-										{{app.user.avatar}}
-									{% else %}
-										{{asset('assets/images/avatar-anonyme.gif')}}
-									{% endif %} " alt="Avatar" class="rounded-circle avatar">
+						<img src="{% if app.user.avatar is not null %}{{app.user.avatar}}{% else %}{{asset('assets/images/avatar-anonyme.gif')}}{% endif %} " alt="Avatar" class="rounded-circle avatar">
 					</a>
 					<div class="dropdown-menu">
 						<a href="{{ path('choix_annonces') }}" class="dropdown-item">Mes Annonces</a>

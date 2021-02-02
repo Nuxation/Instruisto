@@ -1,72 +1,69 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-<div class="row">
-    <div class="col-1"></div>
-    <div class="col-6">
-        {%  if annonces is defined %}
-            {% for annonce in annonces %}
-                <div class="card border-primary mb-3">
-                    <div class="card-body">
-                        <h4 class="card-title">
-                            <a href="{{ path('annonce_display', {'id' : annonce.id}) }}" > {{ annonce }}</a>
-                        </h4>
-                        <p class="card-text"></p>
-                    </div>
-                </div>
-            {% endfor %}
-            <div>
-          <ul class="pagination">
-            <li class="page-item
-            {% if currentPage == 1 %}
-                disabled
-            {% endif %}
-            ">
-              <a class="page-link" href="{{ path('index_search_matiere_2', {'matiere' : currentM, 'page' : currentPage-1}) }}">&laquo;</a>
-            </li>
-            {% for i in 1..nbPages %}
-                <li class="page-item 
-                {% if i == currentPage %}
-                    active
-                {% endif %}
-                ">
-                  <a class="page-link" href="{{ path('index_search_matiere_2', {'matiere' : currentM, 'page' : i}) }}">{{i}}</a>
-                </li>
-            {% endfor %}
-            <li class="page-item
-            {% if currentPage == nbPages %}
-                disabled
-            {% endif %}
-            ">
-              <a class="page-link" href="{{ path('index_search_matiere_2', {'matiere' : currentM, 'page' : currentPage+1}) }}">&raquo;</a>
-            </li>
-          </ul>
-        </div>
-        {% endif %}
-    </div>
-    <div class="col-4">
-        <form id="search" action="{{ path('index_search_matiere') }}" method="post" name="searchByMatiere">
-            <label for="matiere">Matieres :</label>
-            <select id="matiere" name="matiere" form="search">
-                {%  if matieres is defined %}
-                    {%  for matiere in matieres %}
-                        <option value="{{ matiere.id }}"
-                                {% if currentM is defined and matiere.id == currentM %}
-                                    selected
-                                {% endif %}
-                        >
-                            {{ matiere.nom }}
-                        </option>
-                    {% endfor %}
-                {% endif %}
-            </select>
-            <br />
-            <input type="submit" name="search" value="Rechercher" />
-        </form>
-    </div>
-    <div class="col-1"></div>
-</div>
+	<div class="row">
+		<div class="col-1"></div>
+		<div class="col-6">
+			{%  if annonces is defined %}
+				{% for annonce in annonces %}
+					<div class="card border-primary mb-3">
+						<div class="card-body">
+							<h4 class="card-title">
+								<div class="row">
+									<div class="col-8">
+										<a class="d-flex justify-content-center text-dark" href="{{ path('annonce_display', {'id' : annonce.id}) }}">{{ annonce }}</a>
+									</div>
+									<div class="col-4">
+										<div>
+											<img class="rounded-circle avatar-moyen rounded mx-auto d-block" src="{{ annonce.auteur.avatar}}" alt="Avatar de {{ annonce.auteur.prenom }}">
+										</div>
+										<div class="d-flex justify-content-center">
+											{{ annonce.auteur.prenom }}
+										</div>
+									</div>
+								</div>
+							</h4>
+							<p class="card-text"></p>
+						</div>
+					</div>
+				{% endfor %}
+				<div>
+					<ul class="pagination d-flex justify-content-center">
+						<li class="page-item {% if currentPage == 1 %} disabled {% endif %}">
+							<a class="page-link" href="{{ path('index_search_matiere_2', {'matiere' : currentM, 'page' : currentPage-1}) }}">&laquo;</a>
+						</li>
+						{% for i in 1..nbPages %}
+							<li class="page-item {% if i == currentPage %} active {% endif %}">
+								<a class="page-link" href="{{ path('index_search_matiere_2', {'matiere' : currentM, 'page' : i}) }}">{{i}}</a>
+							</li>
+						{% endfor %}
+						<li class="page-item {% if currentPage == nbPages %}disabled{% endif %}">
+							<a class="page-link" href="{{ path('index_search_matiere_2', {'matiere' : currentM, 'page' : currentPage+1}) }}">&raquo;</a>
+						</li>
+					</ul>
+				</div>
+			{% endif %}
+		</div>
+		<div class="col-4" style="height: 100%;">
+			<div class="card border-primary mb-3">
+				<div class="card-body">
+					<form id="search" action="{{ path('index_search_matiere') }}" method="post" name="searchByMatiere">
+						<label for="matiere">Matieres :</label>
+						<select id="matiere" name="matiere" form="search">
+							{%  if matieres is defined %}
+								{%  for matiere in matieres %}
+									<option value="{{ matiere.id }}" {% if currentM is defined and matiere.id == currentM %} selected {% endif %}>
+										{{ matiere.nom }}
+									</option>
+								{% endfor %}
+							{% endif %}
+						</select>
+						<br/>
+						<input class="btn btn-primary" type="submit" name="search" value="Rechercher"/>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="col-1"></div>
+	</div>
 {% endblock %}
-
-
-

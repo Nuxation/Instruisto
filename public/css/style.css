@@ -6,6 +6,10 @@
 img.avatar{
     height: 40px;
 }
+
+img.avatar-moyen{
+    height: 70px;
+}
 .media-style {
     display: flex;
     justify-content: center;
