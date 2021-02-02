@@ -1,0 +1,32 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<div class="row">
+    <div class="col">
+        <p>
+            <a href="{{path('choix_annonces')}}" class="btn btn-primary mx-2 my-2 my-sm-0">Retour</a>
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-1"></div>
+    <div class="col-6">
+        {%  if annonces is defined %}
+            {% for annonce in annonces %}
+                <div class="card border-primary mb-3">
+                    <div class="card-body">
+                        <h4 class="card-title">
+                            <a href="{{ path('annonce_display', {'id' : annonce.id}) }}" > {{ annonce }}</a>
+                        </h4>
+                        <p class="card-text"></p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="col-5"></div>
+</div>
+{% endblock %}
+
+
+

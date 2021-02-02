@@ -43,7 +43,8 @@ class ProfilController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
-            $oldUser = $this->getDoctrine()->getRepository(User::class)->find($user->getId());
+            $oldUser = $this->getUser();
+           // $oldUser = $this->getDoctrine()->getRepository(User::class)->find($user->getId());
 
             $avatarFile = $form->get('avatar')->getData();
             if($form->get('password')->getData() == ""){
@@ -101,7 +102,8 @@ class ProfilController extends AbstractController
      */
     public function supprimer(User $user, Request $request)
     {
-        $personne = $this->getDoctrine()->getRepository(User::class)->find(6);
+        $personne = $this->getUser();
+        //$personne = $this->getDoctrine()->getRepository(User::class)->find(6);
         $em = $this->getDoctrine()->getManager();
         $em->remove($personne);
         $em->flush();

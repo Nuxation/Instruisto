@@ -1,0 +1,38 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<div class="row">
+    <div class="col-1"></div>
+    <div class="col-6">
+        <div class="card border-primary mb-3">
+            <div class="card-body">
+                <h4 class="card-title">
+                    <a href="{{ path('user_annonces_publiées') }}" > Mes annonces publiées</a>
+                </h4>
+                <p class="card-text"></p>
+            </div>
+        </div>
+        <div class="card border-primary mb-3">
+            <div class="card-body">
+                <h4 class="card-title">
+                    <a href="{{ path('user_annonces_validées') }}" > Mes annonces validées</a>
+                </h4>
+                <p class="card-text"></p>
+            </div>
+        </div>
+        <div class="card border-primary mb-3">
+            <div class="card-body">
+                <h4 class="card-title">
+                    <a href="{{ path('user_annonces_passées') }}" > Mes annonces déjà passées</a>
+                </h4>
+                <p class="card-text"></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-5">
+    </div>
+</div>
+{% endblock %}
+
+
+
