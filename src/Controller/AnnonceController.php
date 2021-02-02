@@ -13,6 +13,7 @@ use App\Entity\StatusCandidat;
 use App\Entity\StatusAnnonce;
 use App\Entity\UtilisateurAnnonce;
 use App\Entity\Message;
+use App\Entity\User;
 use App\Form\AnnonceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
@@ -269,4 +270,57 @@ class AnnonceController extends AbstractController
             'annonces'=>$annoncesPassées
         ]);
     }
+
+    /**
+     * @Route("/annonce/{id}/candidatures", name="candidatures")
+     */
+    public function candidatures($id) {
+        $annonce = $this->getDoctrine()->getRepository(Annonce::class)->find($id);
+        $candidatsua = $annonce->getUtilisateurAnnonces();
+        $candidatsUsers = array();
+        foreach ($candidatsua as $candidatua) {
+            $candidatsUsers[] = $candidatua->getCandidat();
+        }
+        return $this->render('annonce/candidats.html.twig', [
+            'annonce'=>$annonce,
+            'candidats'=>$candidatsUsers
+        ]);
+    }
+
+    /**
+     * @Route("/annonce/{id}/accepterCandidature/{candidatId}", name="accepter_candidature")
+     */
+    public function accepterCandidature($id, $candidatId) {
+        $statutValidé = $this->getDoctrine()->getRepository(StatusCandidat::class)->findByNom("Validé");
+        $statutRejeté = $this->getDoctrine()->getRepository(StatusCandidat::class)->findByNom("Rejeté");
+
+        $annonce = $this->getDoctrine()->getRepository(Annonce::class)->find($id);
+        $candidat = $this->getDoctrine()->getRepository(User::class)->find($candidatId);
+
+        if (!is_null($annonce) && !is_null($candidat)) {
+            $candidatsua = $annonce->getUtilisateurAnnonces();
+            $candidatsUsers = array();
+            foreach ($candidatsua as $candidatua) {
+                $idCandidat = $candidatua->getCandidat()->getId();
+                if ($idCandidat == $candidatId) {
+                    $candidatua->setStatusCandidat($statutValidé[0]);
+                }
+                else {
+                    $candidatua->setStatusCandidat($statutRejeté[0]);
+                }
+            }
+
+            $statutAnnonce = $this->getDoctrine()->getRepository(StatusAnnonce::class)->findByNom("enseignant_validé");
+            $annonce->setStatusAnnonce($statutAnnonce[0]);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($annonce);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('user_annonces_validées');
+        }
+        return $this->redirectToRoute('candidatures', [
+            'id' => $id
+        ]);
+    }
+
 }
