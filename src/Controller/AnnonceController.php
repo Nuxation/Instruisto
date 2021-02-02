@@ -27,13 +27,52 @@ class AnnonceController extends AbstractController
     }
 
     /**
-     * @Route("/annonce/search", name="index_search_matiere")
+     * @Route("/annonce/search/{page}", name="index_search_matiere")
      */
-    public function search(Request $request) {
+    public function search($page, Request $request) {
         $listMatiere = $this->getDoctrine()->getRepository(Matiere::class)->findAll();
         $matiere = $request->request->get('matiere');
         $annonce = $this->getDoctrine()->getRepository(Annonce::class)->findByMatiere($matiere);
-        return $this->render('annonce/index.html.twig',['annonces' => $annonce,'matieres'=>$listMatiere, 'currentM'=>$matiere]);
+        $nbAnnonces = sizeof($annonce);
+        $nbPages = ceil($nbAnnonces / 5);
+        $annoncesToDisplay = array();
+        if (isset($page)) {
+            if ($page <= $nbPages) {
+            for ($i = 5 * ($page - 1); $i < 5 * $page; $i++) {
+                if (isset($annonce[$i])) {
+                    $annoncesToDisplay[] = $annonce[$i];
+                }
+            }
+        }
+        else {
+            $page = 1;
+        }
+        }
+        return $this->render('annonce/index.html.twig',['annonces' => $annoncesToDisplay,'matieres'=>$listMatiere, 'currentM'=>$matiere, 'currentPage' => $page, 'nbPages' => $nbPages]);
+    }
+
+        /**
+     * @Route("/annonce/search/{matiere}/{page}", name="index_search_matiere_2")
+     */
+    public function search2($matiere, $page, Request $request) {
+        $listMatiere = $this->getDoctrine()->getRepository(Matiere::class)->findAll();
+        $annonce = $this->getDoctrine()->getRepository(Annonce::class)->findByMatiere($matiere);
+        $nbAnnonces = sizeof($annonce);
+        $nbPages = ceil($nbAnnonces / 5);
+        $annoncesToDisplay = array();
+        if (isset($page)) {
+            if ($page <= $nbPages) {
+            for ($i = 5 * ($page - 1); $i < 5 * $page; $i++) {
+                if (isset($annonce[$i])) {
+                    $annoncesToDisplay[] = $annonce[$i];
+                }
+            }
+        }
+        else {
+            $page = 1;
+        }
+        }
+        return $this->render('annonce/index.html.twig',['annonces' => $annoncesToDisplay,'matieres'=>$listMatiere, 'currentM'=>$matiere, 'currentPage' => $page, 'nbPages' => $nbPages]);
     }
 
 

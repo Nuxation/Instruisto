@@ -15,10 +15,37 @@
                     </div>
                 </div>
             {% endfor %}
+            <div>
+          <ul class="pagination">
+            <li class="page-item
+            {% if currentPage == 1 %}
+                disabled
+            {% endif %}
+            ">
+              <a class="page-link" href="{{ path('index_search_matiere_2', {'matiere' : currentM, 'page' : currentPage-1}) }}">&laquo;</a>
+            </li>
+            {% for i in 1..nbPages %}
+                <li class="page-item 
+                {% if i == currentPage %}
+                    active
+                {% endif %}
+                ">
+                  <a class="page-link" href="{{ path('index_search_matiere_2', {'matiere' : currentM, 'page' : i}) }}">{{i}}</a>
+                </li>
+            {% endfor %}
+            <li class="page-item
+            {% if currentPage == nbPages %}
+                disabled
+            {% endif %}
+            ">
+              <a class="page-link" href="{{ path('index_search_matiere_2', {'matiere' : currentM, 'page' : currentPage+1}) }}">&raquo;</a>
+            </li>
+          </ul>
+        </div>
         {% endif %}
     </div>
     <div class="col-4">
-        <form id="search" action="{{ path('index_search_matiere') }}" method="post" name="searchByMatiere">
+        <form id="search" action="{{ path('index_search_matiere', {'page' : 1}) }}" method="post" name="searchByMatiere">
             <label for="matiere">Matieres :</label>
             <select id="matiere" name="matiere" form="search">
                 {%  if matieres is defined %}
