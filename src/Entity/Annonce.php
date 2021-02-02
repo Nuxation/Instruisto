@@ -76,7 +76,7 @@ class Annonce
     private $statusAnnonce;
 
     /**
-     * @ORM\OneToMany(targetEntity=Creneau::class, mappedBy="annonce", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Creneau::class, mappedBy="annonce", orphanRemoval=true, cascade={"persist"})
      */
     private $creneaus;
 

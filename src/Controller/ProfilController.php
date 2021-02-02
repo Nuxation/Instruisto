@@ -2,25 +2,28 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
-use App\Form\ProfilType;
 use phpDocumentor\Reflection\Types\Array_;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use App\Form\ProfilType;
+use App\Entity\User;
 
 class ProfilController extends AbstractController
 {
     /**
      * @Route("/profil", name="profil")
+     * @IsGranted("ROLE_USER")
      */
     public function index(): Response
     {
-        $user = $this->getDoctrine()->getRepository(User::class)->find( 6);
+        $user = $this->getUser();
         $form = $this->createForm(ProfilType::class, $user);
 
         return $this->render('profil/profil.html.twig', [

@@ -29,7 +29,7 @@ class Creneau
 
     /**
      * @ORM\ManyToOne(targetEntity=Annonce::class, inversedBy="creneaus")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $annonce;
 

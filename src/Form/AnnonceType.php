@@ -2,13 +2,15 @@
 
 namespace App\Form;
 
-use App\Entity\Annonce;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\AbstractType;
+use App\Form\CreneauType;
+use App\Entity\Annonce;
 
 class AnnonceType extends AbstractType
 {
@@ -27,6 +29,11 @@ class AnnonceType extends AbstractType
             ->add('matiere')
             ->add('presentiel')
             ->add('niveau')
+            ->add('creneaus', CollectionType::class,[
+                'entry_type' => CreneauType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+            ])
         ;
     }
 

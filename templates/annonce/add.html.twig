@@ -1,12 +1,26 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ action }}{% endblock %}
+{% block title %}
+	{{ action }}
+{% endblock %}
+
+{% form_theme annonceForm 'annonce/_collection.html.twig' %}
 
 {% block body %}
 
-<div class="container">
-	<h2>{{ action }}</h2>
- 	{{ form(annonceForm) }}
-</div>
+	<div class="container">
+		<h2>
+			{{ action }}
+		</h2>
+		{{ form_start(annonceForm)}}
+		{{ form_widget(annonceForm)}}
+
+		{{ form_end(annonceForm)}}
+	</div>
+
+{% endblock %}
+
+{% block javascripts %}
+	<script defer src="{{ asset('js/creneau.js') }}"></script>
 
 {% endblock %}

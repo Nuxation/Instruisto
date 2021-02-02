@@ -95,8 +95,14 @@ class AnnonceController extends AbstractController
             $annonce->setAuteur($this->getUser());
             $statut = $this->getDoctrine()->getRepository(StatusAnnonce::class)->findByNom("recherche_enseignant");
             $annonce->setStatusAnnonce($statut[0]);
-    		$entityManager->persist($annonce);
-    		$entityManager->flush();
+            $entityManager->persist($annonce);
+            
+            $entityManager->flush();
+            
+            for ($i=0; $i <  count($annonce->getCreneaus()); $i++) { 
+                $annonce->getCreneaus()[$i]->setAnnonce($annonce);
+            }
+            $entityManager->flush();
     		return $this->redirectToRoute('annonce_display', array('id' => $annonce->getId()));
     	}
         return $this->render('annonce/add.html.twig',
