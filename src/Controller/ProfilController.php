@@ -30,28 +30,35 @@ class ProfilController extends AbstractController
 
         $annonces = $annonceRepository->findBy(['auteur' =>  $user]);
 
-        $crenau = $creneauRepository->find($annonces);
+        
+        $rdvs = [];
+        foreach ($annonces as $annonce) {
+            if ($annonce->getStatusAnnonce()->getnom() == "enseignant_validé" || $annonce->getStatusAnnonce()->getnom() == "cours_fini")
+            {
+                $rdvs[] = [
+                    'id' => $annonce->getId(),
+                    'start' => $creneauRepository->findOneBy(['annonce' => $annonce])->getDebutAt()->format(\DateTime::ISO8601),
+                    'end' => $creneauRepository->findOneBy(['annonce' => $annonce])->getFinAt()->format(\DateTime::ISO8601),
+                    'title' => $annonce->getTitre(),
+                ];
+            }
+        }
 
-
-        //$annonceNom = $annonces->getStatusAnnonce()->getnom();
-
-        $start = $crenau->getDebutAt()->format(\DateTime::ISO8601);
-        $end = $crenau->getFinAt()->format(\DateTime::ISO8601);
-       // $annonceTitre = $annonces->getTitre();
-
+        $data = json_encode($rdvs);
 
         return $this->render('profil/profil.html.twig', [
             'formProfil' => $form->createView(),
             'idUser' => $user->getId(),
             'prenomUser' => $user->getPrenom(),
             'image' => $user->getAvatar(),
+            'data' => $data,
         ]);
     }
 
     /**
      * @Route("/profil/modifier/{id}", name="modifier_form")
      */
-    public function modifier(User $user, Request $request, UserPasswordEncoderInterface $encoder)
+    public function modifier(User $user, Request $request, UserPasswordEncoderInterface $encoder,AnnonceRepository $annonceRepository, CreneauRepository $creneauRepository)
     {
         $form = $this->createForm(ProfilType::class, $user);
         $form->handleRequest($request);
@@ -64,14 +71,11 @@ class ProfilController extends AbstractController
             if ($form->get('password')->getData() == "") {
                 $user->setPassword($oldUser->getPassword());
             } else {
-                dd($encoder->isPasswordValid($oldUser, "B"), $encoder->encodePassword($oldUser, $oldUser->getPassword()), $encoder->encodePassword($oldUser, $request->request->get('ancienPassword')));
+                //dd($encoder->isPasswordValid($oldUser, "B"), $encoder->encodePassword($oldUser, $oldUser->getPassword()), $encoder->encodePassword($oldUser, $request->request->get('ancienPassword')));
                 if ($encoder->isPasswordValid($user, $request->request->get('ancienPassword')) && $request->request->get('nvPassword') == $form->get('password')->getData()) {
-                    dd('hi2');
                     $user->setPassword($encoder->encodePassword($user, $form->get('password')->getData()));
                 } else {
                     $user->setPassword($encoder->encodePassword($oldUser, "B"));
-                    //dd('hi');
-                    var_dump("hi");
                 }
             }
             if ($avatarFile) {
@@ -96,12 +100,28 @@ class ProfilController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->flush();
         }
-
+        $annonces = $annonceRepository->findBy(['auteur' =>  $user]);
+        
+        $rdvs = [];
+        foreach ($annonces as $annonce) {
+            if ($annonce->getStatusAnnonce()->getnom() == "enseignant_validé" || $annonce->getStatusAnnonce()->getnom() == "cours_fini")
+            {
+                $rdvs[] = [
+                    'id' => $annonce->getId(),
+                    'start' => $creneauRepository->findOneBy(['annonce' => $annonce])->getDebutAt()->format(\DateTime::ISO8601),
+                    'end' => $creneauRepository->findOneBy(['annonce' => $annonce])->getFinAt()->format(\DateTime::ISO8601),
+                    'title' => $annonce->getTitre(),
+                ];
+            }
+        }
+        $data = json_encode($rdvs);
+        
         return $this->render('profil/profil.html.twig', [
             'formProfil' => $form->createView(),
             'idUser' => $user->getId(),
             'prenomUser' => $user->getPrenom(),
             'image' => $user->getAvatar(),
+            'data' => $data,
         ]);
     }
     private function slugify($string)

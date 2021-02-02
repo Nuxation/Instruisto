@@ -183,6 +183,10 @@
                 </div>
             </div>
             <div class="col-sm">
+                <div class="ml-5 my-2 border">
+                    <h3 class="text-center">Mon calendrier</h3>
+                    <div id="calendrier"></div>
+                </div>
                 <div id="chanePassword">
                     <h3 id="titleSupprimerCompte">Changer de mot de passe</h3>
                     <div id="changerLePassword">
@@ -238,6 +242,25 @@
         });
     })
 
+    window.onload = () => {
+
+        let calnedarElt = document.querySelector("#calendrier")
+
+        let calendar = new FullCalendar.Calendar(calnedarElt, {
+            themeSystem: 'bootstrap',
+            height: 650,
+            contentHeight: 600,
+            initialView: 'dayGridMonth',
+            locale : 'fr',
+            timeZone: 'Europe/Paris',
+            headerToolbar: {
+                end: 'dayGridMonth,timeGridWeek'
+            },
+            events: {{ data |raw  }}
+
+        });
+        calendar.render();
+    }
 </script>
 {% endblock %}
 

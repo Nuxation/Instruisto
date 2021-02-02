@@ -13,11 +13,11 @@
 					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
 						<span class="align-items-end">{{app.user.prenom}}</span>
 						<img src="
-						{% if app.user.avatar is not null %}
-							{{app.user.avatar}}
-						{% else %}
-							{{asset('assets/images/avatar-anonyme.gif')}}
-						{% endif %} " alt="Avatar" class="rounded-circle avatar">
+									{% if app.user.avatar is not null %}
+										{{app.user.avatar}}
+									{% else %}
+										{{asset('assets/images/avatar-anonyme.gif')}}
+									{% endif %} " alt="Avatar" class="rounded-circle avatar">
 					</a>
 					<div class="dropdown-menu">
 						<a href="{{ path('choix_annonces') }}" class="dropdown-item">Mes Annonces</a>
@@ -44,3 +44,10 @@
 		</div>
 	{% endif %}
 </nav>
+<div class="container">
+	{% for message in app.flashes %}
+		<div class="alert alert-{{ _key }}" role="alert">
+			{{ message[0]|raw }}
+		</div>
+	{% endfor %}
+</div>
