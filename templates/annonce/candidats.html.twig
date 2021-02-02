@@ -4,21 +4,21 @@
 <div class="row">
     <div class="col">
         <p>
-            <a href="{{path('choix_annonces')}}" class="btn btn-primary mx-2 my-2 my-sm-0">Retour</a>
+            <a href="{{path('user_annonces_publiées')}}" class="btn btn-primary mx-2 my-2 my-sm-0">Retour</a>
         </p>
     </div>
 </div>
 <div class="row">
     <div class="col-1"></div>
     <div class="col-6">
-        {%  if annonces is defined %}
-            {% for annonce in annonces %}
+        {%  if candidats is defined %}
+            {% for candidat in candidats %}
                 <div class="card border-primary mb-3">
                     <div class="card-body">
                         <h4 class="card-title">
-                            <a href="{{ path('annonce_display', {'id' : annonce.id}) }}" > {{ annonce }}</a>
+                            {{candidat.prenom}} {{candidat.nom}}
                         </h4>
-                        <a href="{{path('candidatures', {'id' : annonce.id})}}" class="btn btn-primary mx-2 my-2 my-sm-0">Candidatures</a>
+                        <a href="{{path('accepter_candidature', {'id' : annonce.id, 'candidatId' : candidat.id})}}" class="btn btn-primary mx-2 my-2 my-sm-0">Choisir comme tuteur</a>
                         <p class="card-text"></p>
                     </div>
                 </div>
@@ -28,3 +28,6 @@
     <div class="col-5"></div>
 </div>
 {% endblock %}
+
+
+
