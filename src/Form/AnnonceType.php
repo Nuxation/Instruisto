@@ -20,14 +20,13 @@ class AnnonceType extends AbstractType
             ->add('prix', NumberType::class)
             ->add('dureeEnMin', IntegerType::class, [
                 'attr' => [
-                'min' => 5,
+                'min' => 15,
                 'max' => 500
             ]])
             ->add('lieux')
             ->add('matiere')
             ->add('presentiel')
             ->add('niveau')
-            ->add('statusAnnonce')
         ;
     }
 

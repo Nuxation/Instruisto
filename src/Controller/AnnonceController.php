@@ -8,7 +8,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Annonce;
+use App\Entity\Creneau;
 use App\Entity\StatusCandidat;
+use App\Entity\StatusAnnonce;
 use App\Entity\UtilisateurAnnonce;
 use App\Entity\Message;
 use App\Form\AnnonceType;
@@ -21,17 +23,61 @@ class AnnonceController extends AbstractController
      */
     public function index() {
         $matiere = $this->getDoctrine()->getRepository(Matiere::class)->findAll();
-        return $this->render('annonce/index.html.twig',['matieres' => $matiere]);
+        $annonces = $this->getDoctrine()->getRepository(Annonce::class)->findAll();
+        $annoncesToDisplay = array();
+        for ($i = 0; $i < 5; $i++) {
+            if (isset($annonces[$i])) {
+                $annoncesToDisplay[] = $annonces[$i];
+            }
+        }
+        return $this->render('annonce/index.html.twig',[
+            'matieres' => $matiere, 
+            'annonces' => $annoncesToDisplay,
+            'currentPage' => 1,
+            'nbPages' => ceil(sizeof($annonces) / 5),
+            'currentM' => "all"
+        ]);
     }
 
     /**
      * @Route("/annonce/search", name="index_search_matiere")
      */
     public function search(Request $request) {
-        $listMatiere = $this->getDoctrine()->getRepository(Matiere::class)->findAll();
         $matiere = $request->request->get('matiere');
-        $annonce = $this->getDoctrine()->getRepository(Annonce::class)->findByMatiere($matiere);
-        return $this->render('annonce/index.html.twig',['annonces' => $annonce,'matieres'=>$listMatiere, 'currentM'=>$matiere]);
+        
+        return $this->redirectToRoute('index_search_matiere_2', array(
+            'matiere' => $matiere,
+             'page' => 1
+        ));
+    }
+
+        /**
+     * @Route("/annonce/search/{matiere}/{page}", name="index_search_matiere_2")
+     */
+    public function search2($matiere, $page, Request $request) {
+        $listMatiere = $this->getDoctrine()->getRepository(Matiere::class)->findAll();
+        if ($matiere=="all") {
+            $annonce = $this->getDoctrine()->getRepository(Annonce::class)->findAll();
+        }
+        else {
+            $annonce = $this->getDoctrine()->getRepository(Annonce::class)->findByMatiere($matiere);
+        }
+        $nbAnnonces = sizeof($annonce);
+        $nbPages = ceil($nbAnnonces / 5);
+        $annoncesToDisplay = array();
+        if (isset($page)) {
+            if ($page <= $nbPages) {
+            for ($i = 5 * ($page - 1); $i < 5 * $page; $i++) {
+                if (isset($annonce[$i])) {
+                    $annoncesToDisplay[] = $annonce[$i];
+                }
+            }
+        }
+        else {
+            $page = 1;
+        }
+        }
+        return $this->render('annonce/index.html.twig',['annonces' => $annoncesToDisplay,'matieres'=>$listMatiere, 'currentM'=>$matiere, 'currentPage' => $page, 'nbPages' => $nbPages]);
     }
 
 
@@ -47,6 +93,8 @@ class AnnonceController extends AbstractController
     	if ($form->isSubmitted() && $form->isValid()) {
     		$entityManager = $this->getDoctrine()->getManager();
             $annonce->setAuteur($this->getUser());
+            $statut = $this->getDoctrine()->getRepository(StatusAnnonce::class)->findByNom("recherche_enseignant");
+            $annonce->setStatusAnnonce($statut[0]);
     		$entityManager->persist($annonce);
     		$entityManager->flush();
     		return $this->redirectToRoute('annonce_display', array('id' => $annonce->getId()));
@@ -95,7 +143,8 @@ class AnnonceController extends AbstractController
                 $aPostulé = true;
             }
         }
-        return $this->render('annonce/display.html.twig', array('annonce' => $annonce, 'aPostulé' => $aPostulé));
+        $creneaux = $this->getDoctrine()->getRepository(Creneau::class)->findByAnnonce($annonce);
+        return $this->render('annonce/display.html.twig', array('annonce' => $annonce, 'aPostulé' => $aPostulé, 'creneaux' => $creneaux));
     }
 
 	/**
