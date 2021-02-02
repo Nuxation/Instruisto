@@ -8,10 +8,8 @@
 		</title>
 		<link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
 		<link rel="stylesheet" href="{{ asset('css/style.css') }}">
-
-		{% block stylesheets %}
-			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
-		{% endblock %}
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css"> 
+		{% block stylesheets %}{% endblock %}
 
 
 		</head>
@@ -23,17 +21,9 @@
 			{% include "Partials/footer.html.twig" %}
 
 			<script defer src="{{ asset('js/bootstrap.bundle.js') }}"></script>
-			{#<script defer src="{{ asset('js/jQuery.js') }}"></script>#}
-			{% block javascripts %}
-				<script
-						src="https://code.jquery.com/jquery-3.5.1.js"
-						integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-						crossorigin="anonymous">
-				</script>
-				<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
-
-
-			{% endblock %}
+			<script defer src="{{ asset('js/jQuery.js') }}"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+			{% block javascripts %}{% endblock %}
 
 
 		</body>
