@@ -37,6 +37,9 @@ class ProfilType extends AbstractType
             ->add('password',PasswordType::class,[
                 'required' => false,
                 'empty_data' => '',
+                'label' => false,
+                'attr' => array(
+                    'placeholder' => 'Nouveau mot de passe')
             ])
             ->add('email')
             ->add('telephone')
