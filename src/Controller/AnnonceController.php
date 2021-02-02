@@ -205,4 +205,62 @@ class AnnonceController extends AbstractController
             'id' => $id
         ]);
     }
+
+    /**
+     * @Route("/annonce/choixAnnonces", name="choix_annonces")
+     */
+    public function mesAnnonces() {
+        return $this->render('annonce/choixAnnonces.html.twig');
+    }
+
+    /**
+     * @Route("/annonce/choixAnnonces/publiées", name="user_annonces_publiées")
+     */
+    public function userAnnoncesPubliées() {
+        $user = $this->getUser();
+        $annonces = $this->getDoctrine()->getRepository(Annonce::class)->findByAuteur($user);
+        $annoncesPubliées = array();
+        foreach ($annonces as $annonce) {
+            if ($annonce->getStatusAnnonce()->getNom() == "recherche_enseignant") {
+                $annoncesPubliées[] = $annonce;
+            }
+        }
+        return $this->render('annonce/annoncesPubliées.html.twig', [
+            'annonces'=>$annoncesPubliées
+        ]);
+    }
+
+    /**
+     * @Route("/annonce/choixAnnonces/validées", name="user_annonces_validées")
+     */
+    public function userAnnoncesValidées() {
+        $user = $this->getUser();
+        $annonces = $this->getDoctrine()->getRepository(Annonce::class)->findByAuteur($user);
+        $annoncesValidées = array();
+        foreach ($annonces as $annonce) {
+            if ($annonce->getStatusAnnonce()->getNom() == "enseignant_validé") {
+                $annoncesValidées[] = $annonce;
+            }
+        }
+        return $this->render('annonce/annoncesValidées.html.twig', [
+            'annonces'=>$annoncesValidées
+        ]);
+    }
+
+    /**
+     * @Route("/annonce/choixAnnonces/passées", name="user_annonces_passées")
+     */
+    public function userAnnoncesPassées() {
+        $user = $this->getUser();
+        $annonces = $this->getDoctrine()->getRepository(Annonce::class)->findByAuteur($user);
+        $annoncesPassées = array();
+        foreach ($annonces as $annonce) {
+            if ($annonce->getStatusAnnonce()->getNom() == "cours_fini") {
+                $annoncesPassées[] = $annonce;
+            }
+        }
+        return $this->render('annonce/annoncesPassées.html.twig', [
+            'annonces'=>$annoncesPassées
+        ]);
+    }
 }
