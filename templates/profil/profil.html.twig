@@ -205,9 +205,9 @@
 {% block javascripts %}
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
      
-    <script defer language="JavaScript">
+    <script defer>
 
-     $('#buttonSupprimerCompte').on('click', function (e) {
+    $('#buttonSupprimerCompte').on('click', function (e) {
         e.preventDefault();
         $.confirm({
             title: 'Supprimer !',
