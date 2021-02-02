@@ -14,8 +14,7 @@
 						<span class="align-items-end">{{app.user.prenom}}</span>
 						<img src="
 						{% if app.user.avatar is not null %}
-							{#{{app.user.avatar}}#}
-							{{ asset('/images_Profil/'~ image) }}
+							{{app.user.avatar}}
 						{% else %}
 							{{asset('assets/images/avatar-anonyme.gif')}}
 						{% endif %} " alt="Avatar" class="rounded-circle avatar">
