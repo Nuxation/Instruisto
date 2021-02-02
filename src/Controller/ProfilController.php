@@ -70,7 +70,7 @@ class ProfilController extends AbstractController
                   $newFilename = $safeFilename;
               }
               $newFilename = $safeFilename.'-'.uniqid().'.'.$avatarFile->guessExtension();
-              $user->setAvatar($newFilename);
+              $user->setAvatar("/images_Profil/".$newFilename);
               try {
                   $avatarFile->move(
                       $this->getParameter('Images_Profils'),

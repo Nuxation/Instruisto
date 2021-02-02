@@ -146,7 +146,7 @@
                             {{ form_row(formProfil.avatar) }}
                         </div>
                         <div id="ContainerImageProfil" class="imgProfil">
-                            <img id="imageProfil" src="{{ asset('/images_Profil/'~ image) }}" alt="">
+                            <img id="imageProfil" src="{{app.user.avatar}}" alt="">
                             <div class="nom">
                                 {{ prenomUser }}
                             </div>
