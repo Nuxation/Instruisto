@@ -38,11 +38,12 @@ class ConsultationProfilController extends AbstractController
         }
         if (isset($commToDisplay)) {
             $form = $this->createForm(CommentaireType::class, $commToDisplay);
+            $form->add('submit', SubmitType::class, array('label' => 'Modifier'));
         } else {
             $commToDisplay = new Commentaire($this->getUser(),$user);
             $form = $this->createForm(CommentaireType::class, $commToDisplay);
+            $form->add('submit', SubmitType::class, array('label' => 'Ajouter'));
         }
-        $form->add('submit', SubmitType::class, array('label' => 'Modifier'));
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
