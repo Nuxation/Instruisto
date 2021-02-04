@@ -17,6 +17,10 @@ use App\Repository\AnnonceRepository;
 use App\Form\ProfilType;
 use App\Entity\User;
 
+/**
+ * @Route("/")
+ * @IsGranted("ROLE_USER")
+ */
 class ProfilController extends AbstractController
 {
     /**

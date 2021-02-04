@@ -2,16 +2,21 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use App\Form\MessageType;
 use App\Entity\User;
 use App\Entity\Message;
-use App\Form\MessageType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
+/**
+ * @Route("/")
+ * @IsGranted("ROLE_USER")
+ */
 class MessagerieController extends AbstractController
 {
     /**

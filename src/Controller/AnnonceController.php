@@ -2,25 +2,31 @@
 
 namespace App\Controller;
 
-use App\Entity\Matiere;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use App\Entity\Annonce;
-use App\Entity\Creneau;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use App\Form\AnnonceType;
+use App\Entity\UtilisateurAnnonce;
+use App\Entity\User;
 use App\Entity\StatusCandidat;
 use App\Entity\StatusAnnonce;
-use App\Entity\UtilisateurAnnonce;
 use App\Entity\Message;
-use App\Entity\User;
-use App\Form\AnnonceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use App\Entity\Matiere;
+use App\Entity\Creneau;
+use App\Entity\Annonce;
 
+/**
+ * @Route("/")
+ * @IsGranted("ROLE_USER")
+ */
 class AnnonceController extends AbstractController
 {
     /**
      * @Route("/annonce", name="index")
+     *
      */
     public function index() {
         $matiere = $this->getDoctrine()->getRepository(Matiere::class)->findAll();
