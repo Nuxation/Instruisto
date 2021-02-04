@@ -13,24 +13,30 @@
 				<hr>
 
 				{% for message in lastMessages %}
+
 					<div class="row">
-						<div>
-							<img class="rounded-circle avatar-moyen m-2" src="{{message.source.avatar}}" alt="">
-						</div>
-						<div>
-							{% if message.source.id == connectedUser.id %}
+						{% if message.source.id == connectedUser.id %}
+							<div>
+								<img class="rounded-circle avatar-moyen m-2" src="{{message.destinataire.avatar}}" alt="">
+							</div>
+							<div>
 								<p>
 									<a href="{{ path('messagerie_to', { 'id': message.destinataire.id }) }}">
 										{{ message.destinataire }}</a>
 								</p>
-							{% else %}
+							</div>
+						{% else %}
+							<div>
+								<img class="rounded-circle avatar-moyen m-2" src="{{message.source.avatar}}" alt="">
+							</div>
+							<div>
 								<p>
 									<a href="{{ path('messagerie_to', { 'id': message.source.id }) }}">
 										{{ message.source }}</a>
 								</p>
-							{% endif %}
-							<p>{{ message.contenu }}</p>
-						</div>
+							</div>
+						{% endif %}
+						<p>{{ message.contenu }}</p>
 					</div>
 					<hr>
 				{% endfor %}
@@ -72,5 +78,4 @@
 			</div>
 		</div>
 	</div>
-
 {% endblock %}
