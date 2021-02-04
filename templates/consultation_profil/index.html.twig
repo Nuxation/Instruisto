@@ -49,6 +49,35 @@
     </div>
 
     <div class="container">
+        {% if commentaires is defined %}
+            {% for commentaire in commentaires %}
+                <div class="card border-primary mb-3">
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <div class="row">
+                                    <div class="col-8">
+                                        {{commentaire.contenu}}
+                                        </br></br>
+                                        Note : {{commentaire.note}}/5
+                                    </div>
+                                    <div class="col-4">
+                                        <div>
+                                            <img class="rounded-circle avatar-moyen rounded mx-auto d-block" src="{{ commentaire.source.avatar}}" alt="Avatar de {{ commentaire.source.prenom }}">
+                                        </div>
+                                        <div class="d-flex justify-content-center">
+                                            {{ commentaire.source.prenom }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </h4>
+                            <p class="card-text"></p>
+                        </div>
+                    </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <div class="container">
         {{ form_start(commentaireForm) }}
         {{ form_row(commentaireForm.note) }}
         {{ form_row(commentaireForm.contenu) }}

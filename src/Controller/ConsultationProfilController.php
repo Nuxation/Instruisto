@@ -28,6 +28,8 @@ class ConsultationProfilController extends AbstractController
 
         $userId = $this->getUser()->getId();
 
+        $commentairesOnProfil = $this->getDoctrine()->getRepository(Commentaire::class)->findByDestinataire($user->getId());
+
         $commentaire = $this->getDoctrine()->getRepository(Commentaire::class)->findBySource($userId);
         foreach ($commentaire as $c) {
             if ($c->getDestinataire()->getId() == $user->getId()) {
@@ -51,6 +53,7 @@ class ConsultationProfilController extends AbstractController
         return $this->render('consultation_profil/index.html.twig', [
             'commentaireForm' => $form->createView(),
             'user' => $user,
+            'commentaires' => $commentairesOnProfil
         ]);
     }
 }
