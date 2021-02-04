@@ -88,7 +88,7 @@
 
         #imageProfil {
             width: 133px;
-            clip-path: ellipse(49% 28%);
+            clip-path: ellipse(50% 50%);
             margin-right: 22px;
         }
 
@@ -125,6 +125,10 @@
         input#profil_password {
             margin-top: 16px;
         }
+        #a{
+            margin-top: -353px;
+            margin-block-end: -90px
+        }
     </style>
 {% endblock %}
 
@@ -136,11 +140,14 @@
         <div class="row">
             <div class="col-sm">
                     <div id="infoProfil">
-                        <div class="avatar">
+                        <div id="a" class="avatar">
                             {{ form_row(formProfil.avatar) }}
                         </div>
                         <div id="ContainerImageProfil" class="imgProfil">
-                            <img id="imageProfil" src="{{app.user.avatar}}" alt="">
+                            <img id="imageProfil" src="{% if app.user.avatar is not null %}{{app.user.avatar}}
+                            {% else %}{{asset('assets/images/avatar-anonyme.gif')}}
+                            {% endif %} " alt="Avatar" class="rounded-circle avatar" style=" height: 136px">
+                           {#<img id="imageProfil" src="{{app.user.avatar}}" alt="">#}
                             <div class="nom">
                                 {{ prenomUser }}
                             </div>
