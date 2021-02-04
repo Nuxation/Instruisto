@@ -15,7 +15,7 @@
 				{% for message in lastMessages %}
 					<div class="row">
 						<div>
-							<img class="rounded-circle avatar-moyen" src="{{message.source.avatar}}" alt="">
+							<img class="rounded-circle avatar-moyen m-2" src="{{message.source.avatar}}" alt="">
 						</div>
 						<div>
 							{% if message.source.id == connectedUser.id %}
@@ -37,6 +37,25 @@
 			</div>
 			<div class="col-sm-6 border">
 				{% if messagesWithId is defined %}
+					{% if messagesWithId[0].source.id == app.user.id  %}
+						<div class="row">
+							<div>
+								<img class="rounded-circle avatar-moyen m-2" src="{{messagesWithId[0].destinataire.avatar}}" alt="">
+							</div>
+							<div class="d-flex justify-content-center">
+								<p>Conversation avec
+									{{messagesWithId[0].destinataire}}</p>
+							</div>
+						</div>
+					{% else %}
+						<div class="row">
+							<div>
+								<img class="rounded-circle avatar-moyen" src="{{messagesWithId[0].source.avatar}}" alt="">
+							</div>
+							<div></div>
+						</div>
+					{% endif %}
+					<hr>
 					{% for message in messagesWithId %}
 						<p>
 							{{ message.source }}
