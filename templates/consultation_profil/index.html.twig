@@ -61,12 +61,14 @@
                                         Note : {{commentaire.note}}/5
                                     </div>
                                     <div class="col-4">
+                                    <a href="{{path('consultation_profil', {'id' : commentaire.source.id})}}">
                                         <div>
                                             <img class="rounded-circle avatar-moyen rounded mx-auto d-block" src="{{ commentaire.source.avatar}}" alt="Avatar de {{ commentaire.source.prenom }}">
                                         </div>
-                                        <div class="d-flex justify-content-center">
+                                        <div class="d-flex justify-content-center text-dark">
                                             {{ commentaire.source.prenom }}
                                         </div>
+                                  </a>
                                     </div>
                                 </div>
                             </h4>

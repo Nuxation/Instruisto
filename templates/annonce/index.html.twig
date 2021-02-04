@@ -14,12 +14,14 @@
 										<a class="d-flex justify-content-center text-dark" href="{{ path('annonce_display', {'id' : annonce.id}) }}">{{ annonce }}</a>
 									</div>
 									<div class="col-4">
-										<div>
-											<img class="rounded-circle avatar-moyen rounded mx-auto d-block" src="{{ annonce.auteur.avatar}}" alt="Avatar de {{ annonce.auteur.prenom }}">
-										</div>
-										<div class="d-flex justify-content-center">
-											{{ annonce.auteur.prenom }}
-										</div>
+										<a href="{{path('consultation_profil', {'id' : annonce.auteur.id})}}">
+											<div>
+												<img class="rounded-circle avatar-moyen rounded mx-auto d-block" src="{{ annonce.auteur.avatar}}" alt="Avatar de {{ annonce.auteur.prenom }}">
+											</div>
+											<div class="d-flex text-dark justify-content-center ">
+												{{ annonce.auteur.prenom }}
+											</div>
+										</a>
 									</div>
 								</div>
 							</h4>
