@@ -1,40 +1,57 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Messages{% endblock %}
+{% block title %}Messages
+{% endblock %}
 
 {% block body %}
 
-<div class="container">
-	<div class="row mt-5">
-		<div class="col-sm-6">
-			<h1>Contacts : </h1>
-			{% for message in lastMessages %}
-				{% if message.source.id == connectedUser.id %}
-					<p><a href="{{ path('messagerie_to', { 'id': message.destinataire.id }) }}">
-		 {{ message.destinataire }}</a></p>
-				{% else %}
-					<p><a href="{{ path('messagerie_to', { 'id': message.source.id }) }}">
-		 {{ message.source }}</a></p>
-				{% endif %}
-					<p>{{ message.contenu }}</p>
-			{% endfor %}
-		</div>
-		<div class="col-sm-6">
-			{% if messagesWithId is defined %}
-				{% for message in messagesWithId %}
-					<p>
-					{{ message.source }} : 
-					{{ message.contenu }}</p>
-				{% endfor %}
-			{% endif %}
+	<div class="container">
+		<div class="row mt-5">
+			<div class="col-sm-6 border">
+				<h1>Contacts :
+				</h1>
+				<hr>
 
-			{% if messageForm is defined %}
-				{{ form_start(messageForm) }}
-		 		{{ form_row(messageForm.contenu, {'value':''}) }}
-		 		{{ form_end(messageForm) }}
-			{% endif %}
+				{% for message in lastMessages %}
+					<div class="row">
+						<div>
+							<img class="rounded-circle avatar-moyen" src="{{message.source.avatar}}" alt="">
+						</div>
+						<div>
+							{% if message.source.id == connectedUser.id %}
+								<p>
+									<a href="{{ path('messagerie_to', { 'id': message.destinataire.id }) }}">
+										{{ message.destinataire }}</a>
+								</p>
+							{% else %}
+								<p>
+									<a href="{{ path('messagerie_to', { 'id': message.source.id }) }}">
+										{{ message.source }}</a>
+								</p>
+							{% endif %}
+							<p>{{ message.contenu }}</p>
+						</div>
+					</div>
+					<hr>
+				{% endfor %}
+			</div>
+			<div class="col-sm-6 border">
+				{% if messagesWithId is defined %}
+					{% for message in messagesWithId %}
+						<p>
+							{{ message.source }}
+							:
+							{{ message.contenu }}</p>
+					{% endfor %}
+				{% endif %}
+
+				{% if messageForm is defined %}
+					{{ form_start(messageForm) }}
+					{{ form_row(messageForm.contenu, {'value':''}) }}
+					{{ form_end(messageForm) }}
+				{% endif %}
+			</div>
 		</div>
 	</div>
-</div>
 
 {% endblock %}
