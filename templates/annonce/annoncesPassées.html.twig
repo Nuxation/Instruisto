@@ -16,11 +16,26 @@
         {%  if annoncesPasséesEleve is defined %}
             {% for annonce in annoncesPasséesEleve %}
                 <div class="card border-primary mb-3">
-                    <div class="card-body">
-                        <h4 class="card-title">
-                            <a href="{{ path('annonce_display', {'id' : annonce.id}) }}" > {{ annonce }}</a>
-                        </h4>
-                        <p class="card-text">Statut : élève</p>
+                    <div class="row">
+                        <div class="col">
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    <a href="{{ path('annonce_display', {'id' : annonce.id}) }}">
+                                            {{ annonce }}</a>
+                                </h4>
+                                <p class="card-text">Statut : élève</p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <a href="{{path('consultation_profil', {'id' : annonce.auteur.id})}}">
+                                <div>
+                                    <img class="rounded-circle avatar-moyen rounded mx-auto d-block mt-2" src="{{ annonce.auteur.avatar}}" alt="Avatar de {{  annonce.auteur.prenom }}">
+                                </div>
+                                <div class="d-flex justify-content-center text-dark">
+                                    {{  annonce.auteur.prenom }}
+                                </div>
+                            </a>
+                        </div>
                     </div>
                 </div>
             {% endfor %}
@@ -28,11 +43,26 @@
         {%  if annoncesPasséesTuteur is defined %}
             {% for annonce in annoncesPasséesTuteur %}
                 <div class="card border-primary mb-3">
-                    <div class="card-body">
-                        <h4 class="card-title">
-                            <a href="{{ path('annonce_display', {'id' : annonce.id}) }}" > {{ annonce }}</a>
-                        </h4>
-                        <p class="card-text">Statut : tuteur</p>
+                    <div class="row">
+                        <div class="col">
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    <a href="{{ path('annonce_display', {'id' : annonce.id}) }}">
+                                            {{ annonce }}</a>
+                                </h4>
+                                <p class="card-text">Statut : tuteur</p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <a href="{{path('consultation_profil', {'id' : annonce.auteur.id})}}">
+                                <div>
+                                    <img class="rounded-circle avatar-moyen rounded mx-auto d-block mt-2" src="{{ annonce.auteur.avatar}}" alt="Avatar de {{  annonce.auteur.prenom }}">
+                                </div>
+                                <div class="d-flex justify-content-center text-dark">
+                                        {{  annonce.auteur.prenom }}
+                                </div>
+                            </a>
+                        </div>
                     </div>
                 </div>
             {% endfor %}

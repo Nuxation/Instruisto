@@ -23,12 +23,8 @@ class ConsultationProfilController extends AbstractController
      */
     public function index(User $user, Request $request)
     {
-        $user->setPassword('')
-            ->setRoles([]);
 
         $userId = $this->getUser()->getId();
-
-        $commentairesOnProfil = $this->getDoctrine()->getRepository(Commentaire::class)->findByDestinataire($user->getId());
 
         $commentaire = $this->getDoctrine()->getRepository(Commentaire::class)->findBySource($userId);
         foreach ($commentaire as $c) {
@@ -40,16 +36,20 @@ class ConsultationProfilController extends AbstractController
             $form = $this->createForm(CommentaireType::class, $commToDisplay);
             $form->add('submit', SubmitType::class, array('label' => 'Modifier'));
         } else {
-            $commToDisplay = new Commentaire($this->getUser(),$user);
+            $commToDisplay = new Commentaire();
             $form = $this->createForm(CommentaireType::class, $commToDisplay);
             $form->add('submit', SubmitType::class, array('label' => 'Ajouter'));
         }
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $commToDisplay->setSource($this->getUser());
+            $commToDisplay->setDestinataire($user);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($commToDisplay);
             $entityManager->flush();
         }
+
+        $commentairesOnProfil = $this->getDoctrine()->getRepository(Commentaire::class)->findByDestinataire($user->getId());
 
         return $this->render('consultation_profil/index.html.twig', [
             'commentaireForm' => $form->createView(),

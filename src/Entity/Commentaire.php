@@ -46,10 +46,8 @@ class Commentaire
      */
     private $destinataire;
 
-    public function __construct($source, $destinataire)
+    public function __construct()
     {
-        $this->source = $source;
-        $this->destinataire = $destinataire;
         $this->createdAt = new \DateTime();
     }
 
