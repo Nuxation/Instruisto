@@ -48,6 +48,10 @@
         <div id="etudesEtDiplome" class="col">{{ user.etudeEtDiplome }}</div>
     </div>
 
-
-
+    <div class="container">
+        {{ form_start(commentaireForm) }}
+        {{ form_row(commentaireForm.note) }}
+        {{ form_row(commentaireForm.contenu) }}
+        {{ form_end(commentaireForm) }}
+    </div>
 {% endblock %}
